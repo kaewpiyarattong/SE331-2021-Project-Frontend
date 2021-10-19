@@ -3,18 +3,34 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve",
+    "serve": "concurrently \"vue-cli-service serve\" \"json-server --watch db.json --port 3009\"",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/vue-fontawesome": "^3.0.0-5",
+    "axios": "^0.21.1",
+    "bootstrap": "^4.6.0",
+    "chart.js": "^3.5.0",
+    "concurrently": "^6.2.1",
     "core-js": "^3.6.5",
+    "jquery": "^3.6.0",
+    "nprogress": "^0.2.0",
+    "popper.js": "^1.16.1",
+    "vee-validate": "^4.5.3",
     "vue": "^3.0.0",
-    "vuex": "^4.0.0-0"
+    "vue-chartkick": "^1.1.0",
+    "vue-router": "^4.0.0-0",
+    "vue-sweetalert2": "^5.0.2",
+    "vuex": "^4.0.0-0",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
     "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0",
