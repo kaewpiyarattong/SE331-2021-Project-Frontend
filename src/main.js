@@ -1,17 +1,36 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "./router";
-import Gstore from "./store";
-import "bootstrap/dist/css/bootstrap.min.css";
+import GStore from "./store";
 import "nprogress/nprogress.css";
-import VueSweetalert2 from "vue-sweetalert2";
-import "sweetalert2/dist/sweetalert2.min.css";
-import VueChartkick from "vue-chartkick";
-import "chartkick/chart.js";
+import upperFirst from "lodash/upperFirst";
+import camelCase from "lodash/camelCase";
+import "bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { FontAwesomeIcon } from "./plugins/font-awesome";
+import "@/service/AxiosInterceptorSetup.js";
 
-createApp(App)
-  .provide("Gstore", Gstore)
+const requireComponent = require.context(
+  "./components",
+  false,
+  /Base[A-Z]\w+\.(vue|js)$/
+);
+
+// Create a reactive object
+
+const app = createApp(App);
+requireComponent.keys().forEach((fileName) => {
+  const componentConfig = requireComponent(fileName);
+
+  const componentName = upperFirst(
+    camelCase(fileName.replace(/^\.\/(.*)\.\w+$/, "$1"))
+  );
+
+  app.component(componentName, componentConfig.default || componentConfig);
+});
+
+app
   .use(router)
-  .use(VueSweetalert2)
-  .use(VueChartkick)
+  .component("font-awesome-icon", FontAwesomeIcon)
+  .provide("GStore", GStore)
   .mount("#app");

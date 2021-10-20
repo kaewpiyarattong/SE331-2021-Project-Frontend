@@ -1,9 +1,4 @@
-import axios from "axios";
-
-const apiClient = axios.create({
-  baseURL: process.env.VUE_APP_BACKEND_URL,
-  withCredentials: false,
-});
+import apiClient from "@/service/AxiosClient.js";
 
 export default {
   getVaccines() {

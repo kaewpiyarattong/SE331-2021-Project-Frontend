@@ -11,6 +11,7 @@ import Gstore from "@/store";
 import Nprogress from "nprogress";
 import NotFound from "@/views/NotFound.vue";
 import NetworkError from "@/views/NetworkError.vue";
+import Login from "@/views/LoginForm.vue";
 
 const routes = [
   {
@@ -32,6 +33,11 @@ const routes = [
     name: "NotFound",
     component: NotFound,
     props: true,
+  },
+  {
+    path: "/login",
+    name: "Login",
+    component: Login,
   },
   {
     path: "/:catchAll(.*)",
