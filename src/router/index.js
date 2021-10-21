@@ -12,6 +12,7 @@ import Nprogress from "nprogress";
 import NotFound from "@/views/NotFound.vue";
 import NetworkError from "@/views/NetworkError.vue";
 import Login from "@/views/LoginForm.vue";
+import Register from "@/views/RegistrationForm.vue";
 
 const routes = [
   {
@@ -38,6 +39,11 @@ const routes = [
     path: "/login",
     name: "Login",
     component: Login,
+  },
+  {
+    path: "/registers",
+    name: "Register",
+    component: Register,
   },
   {
     path: "/:catchAll(.*)",

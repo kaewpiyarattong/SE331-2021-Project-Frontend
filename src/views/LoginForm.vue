@@ -45,7 +45,11 @@
         </div>
 
         <div class="form-group">
-          <p>Don't have an account? REGISTER HERE(add register page link)</p>
+          <p>Don't have an account?
+            <router-link :to="{ name: 'Register' }" class="nav-link pr-3"
+            >REGISTER HERE
+            </router-link>
+            </p>
         </div>
 
         <div class="form-group">
@@ -105,7 +109,7 @@ label {
   padding: 40px 40px;
 }
 .card {
-  background-color: #6ec2b8;
+  background-color: #9addd1;
   padding: 0px 25px 30px;
   margin: 0 auto 25px;
   margin-top: 50px;
