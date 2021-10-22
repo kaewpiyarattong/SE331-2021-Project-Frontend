@@ -13,6 +13,7 @@ import NotFound from "@/views/NotFound.vue";
 import NetworkError from "@/views/NetworkError.vue";
 import Login from "@/views/LoginForm.vue";
 import Register from "@/views/RegistrationForm.vue";
+import PatientInformation from "@/views/PatientInformation.vue";
 
 const routes = [
   {
@@ -98,6 +99,44 @@ const routes = [
           }
         });
     },
+
+    children: [
+      {
+        path: "",
+        name: "PatientDetail",
+        component: PatientDetail,
+      },
+      {
+        path: "vaccinedetail",
+        name: "VaccineDetail",
+        props: true,
+        component: VaccineDetail,
+      },
+    ],
+  },
+  {
+    path: "/patientInformation",
+    name: "PatientInformation",
+    props: true,
+    component: PatientInformation,
+    beforeEnter: (to) => {
+      return PatientService.getPatient(to.params.id)
+        .then((res) => {
+          // console.log(res);
+          Gstore.patient = res.data;
+        })
+        .catch((err) => {
+          if (err.response && err.response.status == 404) {
+            return {
+              name: "NotFound",
+              params: { resource: "patient" },
+            };
+          } else {
+            return { name: "NetworkError" };
+          }
+        });
+    },
+
     children: [
       {
         path: "",

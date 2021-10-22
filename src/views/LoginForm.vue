@@ -45,11 +45,12 @@
         </div>
 
         <div class="form-group">
-          <p>Don't have an account?
+          <p>
+            Don't have an account?
             <router-link :to="{ name: 'Register' }" class="nav-link pr-3"
-            >REGISTER HERE
+              >REGISTER HERE
             </router-link>
-            </p>
+          </p>
         </div>
 
         <div class="form-group">

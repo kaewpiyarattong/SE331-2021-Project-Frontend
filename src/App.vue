@@ -23,6 +23,11 @@
             >Available Vaccines</router-link
           >
         </li>
+        <li class="nav-item">
+          <a class="nav-link" @click="logout">
+            <font-awesome-icon icon="sign-out-alt" /> LogOut
+          </a>
+        </li>
       </ul>
     </div>
   </nav>
@@ -37,6 +42,24 @@
     <div class="text-center p-3">© 2021 Copyright: Krittaporn and Tulyawat</div>
   </nav>
 </template>
+
+<script>
+import AuthService from "@/service/AuthService.js";
+export default {
+  inject: ["GStore"], // <----
+  computed: {
+    currentUser() {
+      return localStorage.getItem("user");
+    },
+  },
+  methods: {
+    logout() {
+      AuthService.logout();
+      this.$router.go();
+    },
+  },
+};
+</script>
 
 <style>
 #app {

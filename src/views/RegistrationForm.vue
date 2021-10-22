@@ -1,5 +1,5 @@
 <template>
-  <div class="col-md-12" >
+  <div class="col-md-12">
     <div class="col-md-9 col-sm-12" id="content">
       <img
         id="profile-img"
@@ -8,7 +8,7 @@
       />
       <Form @submit="handleRegister" :validation-schema="schema">
         <div v-if="!successful">
-          <div class="row justify-content-center" >
+          <div class="row justify-content-center">
             <div class="col-12 col-md-5 col-sm-12 pr">
               <!-- Add username -->
               <div class="form-group">
@@ -89,7 +89,8 @@
             </div>
             <div class="col-12 col-md-5 col-sm-12">
               <!-- Add gender -->
-              <label for="cars">Gender:
+              <label for="cars"
+                >Gender:
                 <select name="gender" id="gender">
                   <option value="female">Female</option>
                   <option value="male">Male</option>
@@ -98,9 +99,10 @@
               </label>
               <!-- Add DOB -->
               <div class="form-group">
-                <label for="birthday">Birthday:
-                <input type="date" id="birthday" name="birthday">
-              </label>
+                <label for="birthday"
+                  >Birthday:
+                  <input type="date" id="birthday" name="birthday" />
+                </label>
               </div>
               <!-- Add photo -->
               <div class="form-group">
@@ -111,20 +113,20 @@
                 />
               </div>
             </div>
-                      <!-- button Sing up -->
-        <div class="form-group">
-          <button
-            id="button"
-            class="btn btn-primary btn-block"
-            :disabled="loading"
-          >
-            <span
-              v-show="loading"
-              class="spinner-border spinner-border-sm"
-            ></span>
-            Sign Up
-          </button>
-        </div>
+            <!-- button Sing up -->
+            <div class="form-group">
+              <button
+                id="button"
+                class="btn btn-primary btn-block"
+                :disabled="loading"
+              >
+                <span
+                  v-show="loading"
+                  class="spinner-border spinner-border-sm"
+                ></span>
+                Sign Up
+              </button>
+            </div>
           </div>
         </div>
       </Form>
@@ -255,7 +257,6 @@ label {
   color: white;
   background-color: #28787a;
   width: 200px;
-
 }
 
 #content {
@@ -266,6 +267,4 @@ label {
   margin: auto;
   padding-top: 20px;
 }
-
-
 </style>
