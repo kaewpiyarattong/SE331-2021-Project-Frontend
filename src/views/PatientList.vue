@@ -29,6 +29,8 @@
         </button>
         <div :class="{ collapse: !filterShow }">
           <form>
+
+            <!-- Filter name -->
             <div class="form-group">
               <h5>Search by name:</h5>
               <input
@@ -38,6 +40,8 @@
                 placeholder="Patient name"
               />
             </div>
+
+            <!-- Filter the 1st dose -->
             <div class="form-group">
               <h5>Filter the 1st dose</h5>
               <select
@@ -51,6 +55,8 @@
                 <option>Sinopharm</option>
               </select>
             </div>
+
+            <!-- Filter the 2nd dose -->
             <div class="form-group">
               <h5>Filter the 2nd dose</h5>
               <select
@@ -64,6 +70,8 @@
                 <option>Sinopharm</option>
               </select>
             </div>
+
+            <!-- Filter gender -->
             <div class="form-group">
               <h5>Filter gender</h5>
               <select
@@ -78,12 +86,29 @@
               </select>
             </div>
 
+            <!-- Filter age -->
             <div class="form-group">
               <h5>Filter by age range:</h5>
               <span v-if="age != 75"> 5 </span>
               <input type="range" v-model="age" min="10" max="75" step="5" />
               <span>{{ age }}</span>
               <span v-if="age == 75">+ </span>
+            </div>
+
+            <!-- Filter Role -->
+            <div class="form-group">
+              <h5>Filter role</h5>
+              <select
+                class="form-control"
+                id="role"
+                v-model="selected.role"
+              >
+                <option>Any</option>
+                <option>Admin</option>
+                <option>Docter</option>
+                <option>Patient</option>
+                <option>Register</option>
+              </select>
             </div>
           </form>
           <button
@@ -101,7 +126,8 @@
             selected.sbrand == 'Any' &&
             selected.gender == 'Any' &&
             search == '' &&
-            age == 75
+            age == 75 &&
+            role == 'Any'
           "
         >
           All patients: {{ totalPatients }}
@@ -167,6 +193,7 @@ export default {
         fbrand: "Any",
         sbrand: "Any",
         gender: "Any",
+        role: "Any"
       },
     };
   },
@@ -187,7 +214,8 @@ export default {
         this.selected.fbrand != "Any" ||
         this.selected.sbrand != "Any" ||
         this.selected.gender != "Any" ||
-        this.age < 75
+        this.age < 75 ||
+        this.selected.role != "Any"
       ) {
         PatientService.getPatientsAll()
           .then((res) => {
@@ -215,6 +243,7 @@ export default {
         fbrand: "Any",
         sbrand: "Any",
         gender: "Any",
+        role: "Any"
       };
       this.search = "";
       this.age = 75;
@@ -254,6 +283,9 @@ export default {
         return this.age < 75 ? patient.age <= this.age : patient.age >= 5;
       });
     },
+    filterByRole(){
+
+    }
   },
   computed: {
     hasNextPage() {
@@ -278,6 +310,7 @@ export default {
       if (this.age < 75) {
         npatients = this.filterByAgeRange(npatients);
       }
+      // filterByRole
 
       return npatients;
     },
