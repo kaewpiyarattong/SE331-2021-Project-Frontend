@@ -14,6 +14,7 @@ import NetworkError from "@/views/NetworkError.vue";
 import Login from "@/views/LoginForm.vue";
 import Register from "@/views/RegistrationForm.vue";
 import PatientInformation from "@/views/PatientInformation.vue";
+import AddRole from "@/views/AddRole.vue";
 
 const routes = [
   {
@@ -55,6 +56,11 @@ const routes = [
     path: "/network-error",
     name: "NetworkError",
     component: NetworkError,
+  },
+  {
+    path: "/add-role",
+    name: "AddRole",
+    component: AddRole,
   },
   {
     path: "/availableVaccine",

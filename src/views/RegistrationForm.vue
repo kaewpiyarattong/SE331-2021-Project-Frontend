@@ -88,8 +88,19 @@
               </div>
             </div>
             <div class="col-12 col-md-5 col-sm-12">
+                            <!-- Add Age -->
+              <div class="form-group">
+                <Field
+                  placeholder="Age"
+                  name="age"
+                  type="age"
+                  class="form-control"
+                />
+                <ErrorMessage name="age" class="error-feedback" />
+              </div>
+              
               <!-- Add gender -->
-              <label for="cars"
+              <label for="gender"
                 >Gender:
                 <select name="gender" id="gender">
                   <option value="female">Female</option>
@@ -97,13 +108,7 @@
                   <option value="others">Others</option>
                 </select>
               </label>
-              <!-- Add DOB -->
-              <div class="form-group">
-                <label for="birthday"
-                  >Birthday:
-                  <input type="date" id="birthday" name="birthday" />
-                </label>
-              </div>
+
               <!-- Add photo -->
               <div class="form-group">
                 <UploadImages
@@ -191,6 +196,9 @@ export default {
         .required("Password is required!")
         .min(6, "Must be at least 6 characters!")
         .max(40, "Must be maximum 40 characters!"),
+      age: yup
+        .string()
+        .required("Age is required!"),
     });
 
     return {

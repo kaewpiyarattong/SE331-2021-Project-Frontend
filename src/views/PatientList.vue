@@ -29,7 +29,6 @@
         </button>
         <div :class="{ collapse: !filterShow }">
           <form>
-
             <!-- Filter name -->
             <div class="form-group">
               <h5>Search by name:</h5>
@@ -98,11 +97,7 @@
             <!-- Filter Role -->
             <div class="form-group">
               <h5>Filter role</h5>
-              <select
-                class="form-control"
-                id="role"
-                v-model="selected.role"
-              >
+              <select class="form-control" id="role" v-model="selected.role">
                 <option>Any</option>
                 <option>Admin</option>
                 <option>Docter</option>
@@ -126,8 +121,8 @@
             selected.sbrand == 'Any' &&
             selected.gender == 'Any' &&
             search == '' &&
-            age == 75 &&
-            role == 'Any'
+            age == 75
+            //role == 'Any'
           "
         >
           All patients: {{ totalPatients }}
@@ -193,7 +188,7 @@ export default {
         fbrand: "Any",
         sbrand: "Any",
         gender: "Any",
-        role: "Any"
+        role: "Any",
       },
     };
   },
@@ -243,7 +238,7 @@ export default {
         fbrand: "Any",
         sbrand: "Any",
         gender: "Any",
-        role: "Any"
+        role: "Any",
       };
       this.search = "";
       this.age = 75;
@@ -283,9 +278,7 @@ export default {
         return this.age < 75 ? patient.age <= this.age : patient.age >= 5;
       });
     },
-    filterByRole(){
-
-    }
+    filterByRole() {},
   },
   computed: {
     hasNextPage() {
