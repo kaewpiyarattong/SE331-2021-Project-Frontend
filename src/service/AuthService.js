@@ -19,11 +19,20 @@ export default {
       });
   },
   register(user) {
+    console.log(user)
+
     return apiClient
-      .post("/registers", {
+      .post("/register", {
         username: user.username,
         password: user.password,
         email: user.email,
+        firstname: user.firstname,
+        lastname: user.lastname,
+        gender: user.gender,
+        hometown: user.hometown,
+        tel: user.tel,
+        age: user.age,
+        imageUrl: user.imageUrl
       })
       .then((response) => {
         localStorage.setItem("token", response.data.token);
@@ -45,9 +54,7 @@ export default {
   },
   hasRoles(roles) {
     if (GStore.currentUser && roles) {
-      let containRoles = GStore.currentUser.authorities.filter((authority) =>
-        roles.includes(authority)
-      );
+      let containRoles = GStore.currentUser[0].name;
       if (containRoles.length > 0) {
         return true;
       } else {

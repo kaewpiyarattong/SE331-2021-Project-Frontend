@@ -23,11 +23,19 @@
             >Available Vaccines</router-link
           >
         </li>
-        <li class="nav-item">
-          <a class="nav-link" @click="logout">
-            <font-awesome-icon icon="sign-out-alt" /> LogOut
-          </a>
-        </li>
+        <ul v-if="GStore.currentUser" class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <router-link to="/profile" class="nav-link">
+              <font-awesome-icon icon="user" />
+              {{ GStore.currentUser.username }}
+            </router-link>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" @click="logout">
+              <font-awesome-icon icon="sign-out-alt" /> LogOut
+            </a>
+          </li>
+        </ul>
       </ul>
     </div>
   </nav>
@@ -51,11 +59,14 @@ export default {
     currentUser() {
       return localStorage.getItem("user");
     },
+    isAdmin() {
+      return AuthService.hasRoles("ROLE_ADMIN");
+    },
   },
   methods: {
     logout() {
       AuthService.logout();
-      this.$router.go();
+      this.$router.push({ name: "Login" });
     },
   },
 };

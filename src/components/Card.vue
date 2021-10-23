@@ -8,8 +8,8 @@
         <!-- add patient's image -->
         <img
           class="img-fluid"
-          v-if="patient.image"
-          :src="patient.image"
+          v-if="patient.user.imageUrl"
+          :src="patient.user.imageUrl"
           alt="profile"
           style="height: 230px; object-fit: cover"
         />
@@ -23,50 +23,13 @@
 
         <div class="card-body">
           <h5 class="card-title">
-            {{ patient.firstname }}
+            {{ patient.user.firstname }}
           </h5>
           <h5 class="card-title">
-            {{ patient.surname }}
+            {{ patient.user.surname }}
           </h5>
-          <p class="card-text">Age: {{ patient.age }}</p>
+          <p class="card-text">Age: {{ patient.user.age }}</p>
         </div>
-        <span v-if="patient.vaccination.seconddose">
-          <img
-            src="../assets/astrazeneca.png"
-            style="width: 50px"
-            v-if="patient.vaccination.firstdose.brand == 'Astrazeneca'"
-          />
-          <img
-            src="../assets/sinovac.png"
-            style="width: 50px"
-            v-else-if="patient.vaccination.firstdose.brand == 'Sinovac'"
-          />
-          <img src="../assets/sinopharm.png" style="width: 50px" v-else />
-          <img
-            src="../assets/astrazeneca.png"
-            style="width: 50px"
-            v-if="patient.vaccination.seconddose.brand == 'Astrazeneca'"
-          />
-          <img
-            src="../assets/sinovac.png"
-            style="width: 50px"
-            v-else-if="patient.vaccination.seconddose.brand == 'Sinovac'"
-          />
-          <img src="../assets/sinopharm.png" style="width: 50px" v-else />
-        </span>
-        <span v-else>
-          <img
-            src="../assets/astrazeneca.png"
-            style="width: 50px"
-            v-if="patient.vaccination.firstdose.brand == 'Astrazeneca'"
-          />
-          <img
-            src="../assets/sinovac.png"
-            style="width: 50px"
-            v-else-if="patient.vaccination.firstdose.brand == 'Sinovac'"
-          />
-          <img src="../assets/sinopharm.png" style="width: 50px" v-else />
-        </span>
       </div>
     </router-link>
   </div>

@@ -130,7 +130,7 @@
         <p v-else>Filter found: {{ filterPatientList.length }}</p>
         <div class="row row-cols-1 row-cols-md-3 g-4">
           <Card
-            v-for="patient in filterPatientList"
+            v-for="patient in patients"
             :patient="patient"
             :key="patient.id"
           ></Card>
@@ -204,31 +204,15 @@ export default {
   },
   async created() {
     await watchEffect(() => {
-      if (
-        this.search != "" ||
-        this.selected.fbrand != "Any" ||
-        this.selected.sbrand != "Any" ||
-        this.selected.gender != "Any" ||
-        this.age < 75 ||
-        this.selected.role != "Any"
-      ) {
-        PatientService.getPatientsAll()
-          .then((res) => {
-            this.patients = res.data;
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      } else {
-        PatientService.getPatients(this.page, this.limit)
-          .then((res) => {
-            this.patients = res.data;
-            this.totalPatients = res.headers["x-total-count"];
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-      }
+      PatientService.getPatients(this.page, this.limit)
+        .then((res) => {
+          // console.log(res.data)
+          this.patients = res.data;
+          this.totalPatients = res.headers["x-total-count"];
+        })
+        .catch((e) => {
+          console.log(e);
+        });
     });
   },
 

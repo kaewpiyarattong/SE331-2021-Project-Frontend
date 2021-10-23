@@ -62,7 +62,7 @@
                   type="text"
                   class="form-control"
                 />
-                <ErrorMessage name="lastname" class="error-feedback" />
+                <ErrorMessage name="tel" class="error-feedback" />
               </div>
 
               <!-- Add Email -->
@@ -88,7 +88,7 @@
               </div>
             </div>
             <div class="col-12 col-md-5 col-sm-12">
-                            <!-- Add Age -->
+              <!-- Add Age -->
               <div class="form-group">
                 <Field
                   placeholder="Age"
@@ -98,14 +98,15 @@
                 />
                 <ErrorMessage name="age" class="error-feedback" />
               </div>
-              
+
               <!-- Add gender -->
               <label for="gender"
                 >Gender:
                 <select name="gender" id="gender">
-                  <option value="female">Female</option>
-                  <option value="male">Male</option>
-                  <option value="others">Others</option>
+                  <option selected disabled>--Select Gender--</option>
+                  <option value="FEMALE">Female</option>
+                  <option value="MALE">Male</option>
+                  <option value="OTHERS">Others</option>
                 </select>
               </label>
 
@@ -115,6 +116,7 @@
                   name="photo"
                   type="photo"
                   @changed="handleImages"
+                  :max="1"
                 />
               </div>
             </div>
@@ -139,9 +141,7 @@
         v-if="message"
         class="alert"
         :class="successful ? 'alert-success' : 'alert-danger'"
-      >
-        {{ message }}
-      </div>
+      ></div>
     </div>
   </div>
 </template>
@@ -185,7 +185,7 @@ export default {
       hometown: yup
         .string()
         .required("Telephone number is required!")
-        .max(10, "Must be maximum 10 characters!"),
+        .max(50, "Must be maximum 50 characters!"),
       email: yup
         .string()
         .required("Email is required!")
@@ -196,16 +196,14 @@ export default {
         .required("Password is required!")
         .min(6, "Must be at least 6 characters!")
         .max(40, "Must be maximum 40 characters!"),
-      age: yup
-        .string()
-        .required("Age is required!"),
+      age: yup.string().required("Age is required!"),
     });
-
     return {
       successful: false,
       loading: false,
       message: "",
       schema,
+      files: [],
     };
   },
   mounted() {
@@ -220,18 +218,21 @@ export default {
       this.message = "";
       this.successful = false;
       this.loading = true;
+            
       Promise.all(
         this.files.map((file) => {
           return AuthService.uploadFile(file);
         })
-      );
-      AuthService.register(user)
-        .then(() => {
-          this.$router.push({ name: "Login" });
-        })
-        .catch(() => {
-          this.message = "could not register";
-        });
+      ).then((res) => {
+        user.imageUrl = res.map((r) => r.data);
+        AuthService.register(user)
+          .then(() => {
+            this.$router.push({ name: "Login" });
+          })
+          .catch(() => {
+            this.message = "could not register";
+          });
+      });
     },
     handleImages(files) {
       this.files = files;

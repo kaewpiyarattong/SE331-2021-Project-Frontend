@@ -59,6 +59,7 @@
           </div>
         </div>
       </Form>
+      {{ username }}
     </div>
   </div>
 </template>
@@ -89,8 +90,9 @@ export default {
   methods: {
     handleLogin(user) {
       AuthService.login(user)
-        .then(() => {
-          this.$router.push({ name: "EventList" });
+        .then((res) => {
+          console.log(res);
+          this.$router.push({ name: "PatientList" });
         })
         .catch(() => {
           this.message = "could not login";
