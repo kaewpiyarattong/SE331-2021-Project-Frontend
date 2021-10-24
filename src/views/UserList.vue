@@ -5,6 +5,8 @@
       <div class="col-md-3 col-sm-12 p-4 mt-md-3" id="sidebar">
         <div class="container mb-3 p-3 rounded" id="insidebar">
           <h5>Vaccine Brands</h5>
+{{search}}
+
           <div class="row mt-3">
             <img src="../assets/astrazeneca.png" style="width: 50px" />
             <label class="text mt-3">Astrazeneca</label>
@@ -38,8 +40,8 @@
                 v-model="search"
                 placeholder="Patient name"
               />
-            </div>
 
+            </div>
             <!-- Filter the 1st dose -->
             <div class="form-group">
               <h5>Filter the 1st dose</h5>
@@ -94,7 +96,6 @@
               <span v-if="age == 75">+ </span>
             </div>
 
-            {{ isAdmin }}
             <!-- Filter Role -->
             <div class="form-group">
               <h5>Filter role</h5>
@@ -129,8 +130,9 @@
           All users: {{ totalUsers }}
         </p>
         <p v-else>Filter found: {{ filterPatientList.length }}</p>
-        <div class="row row-cols-1 row-cols-md-3 g-4">
-          <Card v-for="user in users" :user="user" :key="user.id"></Card>
+
+        <div class="row row-cols-1 row-cols-md-3 g-4" >
+          <Card v-for="user in users" :user="user" :key="user.id" ></Card>
         </div>
         <nav
           class="navbar mt-10 justify-content-center"
@@ -168,7 +170,7 @@ import Card from "@/components/Card";
 import { watchEffect } from "@vue/runtime-core";
 import AuthService from "@/service/AuthService.js";
 import UserService from "@/service/UserService.js";
-import PatientService from "@/service/PatientService.js"
+import PatientService from "@/service/PatientService.js";
 
 export default {
   name: "UserList",
@@ -203,27 +205,24 @@ export default {
   },
   async created() {
     await watchEffect(() => {
-      if(this.isAdmin){
-      UserService.getUsers(this.page, this.limit)
-        .then((res) => {
-          // console.log(res.data)
-          this.users = res.data;
-          this.totalUsers = res.headers["x-total-count"];
-        })
-        .catch((e) => {
-          console.log(e);
-        });
-      }
-      else if(this.isDoctor){
+      if (JSON.parse(localStorage.getItem("user")).authorities[0].name == "ROLE_ADMIN") {
+        UserService.getUsers(this.page, this.limit)
+          .then((res) => {
+            this.users = res.data;
+            this.totalUsers = res.headers["x-total-count"];
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      } else {
         PatientService.getPatients(this.page, this.limit)
           .then((res) => {
-          // console.log(res.data)
-          this.users = res.data;
-          this.totalUsers = res.headers["x-total-count"];
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+            this.users = res.data;
+            this.totalUsers = res.headers["x-total-count"];
+          })
+          .catch((e) => {
+            console.log(e);
+          });
       }
     });
   },
@@ -301,12 +300,12 @@ export default {
     //     // filterByRole
     //     return npatients;
     //   },
-      isAdmin(){
-        return AuthService.hasRoles('ROLE_ADMIN')
-      },
-      isDoctor(){
-        return AuthService.hasRoles('ROLE_DOCTOR')
-      }
+    isAdmin() {
+      return AuthService.hasRoles("ROLE_ADMIN");
+    },
+    isDoctor() {
+      return AuthService.hasRoles("ROLE_DOCTOR");
+    },
   },
 };
 </script>

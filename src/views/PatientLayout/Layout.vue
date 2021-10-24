@@ -4,12 +4,10 @@
       <router-link :to="{ name: 'PatientDetail' }" class="btn m-1" id="button">
         Patient's detail
       </router-link>
-
       <router-link :to="{ name: 'VaccineDetail' }" class="btn m-1" id="button">
         Vaccine's detail
       </router-link>
-
-        <router-link :to="{ name: 'AddRole' }" class="btn m-1" id="button">
+      <router-link :to="{ name: 'AddRole' }" class="btn m-1" id="button" v-if="isAdmin">
         Add Role
       </router-link>
     </div>
@@ -19,7 +17,15 @@
   </div>
 </template>
 <script>
-export default {};
+import AuthService from "@/service/AuthService.js";
+
+export default {
+  computed: {
+    isAdmin() {
+      return AuthService.hasRoles("ROLE_ADMIN");
+    }
+  },
+};
 </script>
 <style>
 .pcontent {

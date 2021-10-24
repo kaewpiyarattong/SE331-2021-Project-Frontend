@@ -8,7 +8,7 @@
         <img src="../src/assets/logo.png" style="width: 100px" />
       </router-link>
 
-      <div>
+      <div v-if="GStore.currentUser">
         <a style="color: #09606a">
           <font-awesome-icon icon="user" />
           {{ GStore.currentUser.username }}

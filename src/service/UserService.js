@@ -7,6 +7,9 @@ export default {
   getUsers(page, limit) {
     return apiClient.get("/users" + "?_page=" + page + "&_limit=" + limit);
   },
+  getUsersName(name, page, limit) {
+    return apiClient.get("/users" + "?_page=" + page + "&_limit=" + limit + "name="+name);
+  },
   getuser(id) {
     return apiClient.get("/user/" + id);
   },

@@ -4,7 +4,6 @@
       :to="{ name: 'PatientDetail', params: { id: user.id } }"
       style="text-decoration: none"
     >
-
       <!-- Show information for Admin -->
       <div class="card" v-if="isAdmin">
         <!-- add patient's image -->
@@ -37,13 +36,13 @@
         </div>
       </div>
 
-            <!-- Show information for Doctor -->
-      <div class="card" v-if="isDoctor">
+      <!-- Show information for Doctor -->
+      <div class="card" v-else>
         <!-- add patient's image -->
         <img
           class="img-fluid"
-          v-if="patient.user.imageUrl.length"
-          :src="patient.user.imageUrl"
+          v-if="user.user.imageUrl.length"
+          :src="user.user.imageUrl"
           alt="profile"
           style="height: 230px; object-fit: cover"
         />
@@ -57,18 +56,16 @@
 
         <div class="card-body">
           <h5 class="card-title">
-            {{ patient.user.firstname }}
+            {{ user.user.firstname }}
           </h5>
           <h5 class="card-title">
-            {{ patient.user.surname }}
+            {{ user.user.surname }}
           </h5>
-          <p class="card-text" v-if="patient.user.authorities.length">
-            {{ patient.user.authorities[0].name }}
+          <p class="card-text" v-if="user.user.authorities.length">
+            {{ user.user.authorities[0].name }}
           </p>
         </div>
       </div>
-
-
     </router-link>
   </div>
 </template>
@@ -84,14 +81,14 @@ export default {
       required: true,
     },
   },
-  computed:{
-    isAdmin(){
-      return AuthService.hasRoles('ROLE_ADMIN')
+  computed: {
+    isAdmin() {
+      return AuthService.hasRoles("ROLE_ADMIN");
     },
-    isDocter(){
-      return AuthService.hasRoles('ROLE_DOCTOR')
-    }
-  }
+    isDocter() {
+      return AuthService.hasRoles("ROLE_DOCTOR");
+    },
+  },
 };
 </script>
 
