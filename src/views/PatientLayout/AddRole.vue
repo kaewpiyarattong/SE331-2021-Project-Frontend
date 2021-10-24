@@ -1,72 +1,140 @@
 <template>
   <div class="col-md-12">
     <div class="col-md-9 col-sm-12" id="content">
-      <h3>Patient's detail</h3>
-      <div class="form-group">
-        <select class="form-control" id="role">
-          <option selected disabled hidden>Select Role</option>
-          <option>Admin</option>
-          <option>Docter</option>
-          <option>Patient</option>
-        </select>
-      </div>
-      <!-- Add 1st vaccine -->
-      <div class="form-group">
-        <select class="form-control">
-          <option selected disabled hidden>Add 1st vaccine</option>
-          <option>Astrazeneca</option>
-          <option>Sinovac</option>
-          <option>Sinopharm</option>
-        </select>
-      </div>
+      <h3>Add Role & Vaccine</h3>
+      <Form @submit="saveRole" :validation-schema="schema">
+        <div v-if="!successful">
+          <div class="row justify-content-center">
+            <div class="col-12 col-md-5 col-sm-12 pr">
+              <!-- Add Role-->
+              <div class="form-group">
+                <select
+                  class="form-control"
+                  v-model="role"
+                  @change="showVaccine"
+                >
+                  <option selected disabled hidden value="">Select Role</option>
+                  <option
+                    v-for="role in GStore.authorities"
+                    :key="role.id"
+                    :value="role.name"
+                  >
+                    {{ role.name }}
+                  </option>
+                </select>
+              </div>
 
-      <!-- Add 1st date date -->
-      <div class="form-group">
-        <label
-          >Date:
-          <input type="date" id="fdate" name="fdate" />
-        </label>
-      </div>
+              <!-- {{Gstore.authorities}} -->
 
-      <!-- Add 2nd vaccine -->
-      <div class="form-group">
-        <select class="form-control">
-          <option selected disabled hidden>Add 2nd vaccine</option>
-          <option>-</option>
-          <option>Astrazeneca</option>
-          <option>Sinovac</option>
-          <option>Sinopharm</option>
-        </select>
-      </div>
-      <!-- Add 2st date date -->
-      <div class="form-group">
-        <label
-          >Date:
-          <input type="date" id="sdate" name="sdate" />
-        </label>
-      </div>
+              <!-- Add 1st vaccine -->
+              <div class="form-group" v-if="!showVaccine">
+                <select
+                  class="form-control"
+                  v-model="firstDose"
+                  @change="showFDate"
+                >
+                  <option selected disabled hidden value="">
+                    Add 1st vaccine
+                  </option>
+                  <option
+                    v-for="vaccine in GStore.vaccines"
+                    :key="vaccine.id"
+                    :value="vaccine.brand"
+                  >
+                    {{ vaccine.brand }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- Add 1st date date -->
+              <div class="form-group" v-if="!showFDate">
+                <label
+                  >Date:
+                  <input type="date" id="fdate" name="fdate" />
+                </label>
+              </div>
+
+              <!-- Add 2nd vaccine -->
+              <div class="form-group" v-if="!showFDate">
+                <select
+                  class="form-control"
+                  v-model="secondDose"
+                  @change="showSDate"
+                >
+                  <option selected disabled hidden value="">
+                    Add 2st vaccine
+                  </option>
+                  <option
+                    v-for="vaccine in GStore.vaccines"
+                    :key="vaccine.id"
+                    :value="vaccine.brand"
+                  >
+                    {{ vaccine.brand }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- Add 2st date date -->
+              <div class="form-group" v-if="!showSDose">
+                <label
+                  >Date:
+                  <input type="date" id="sdate" name="sdate" />
+                </label>
+              </div>
+
+              <!-- button Submit -->
+              <div class="form-group">
+                <button
+                  id="button"
+                  class="btn btn-primary btn-block"
+                  :disabled="loading"
+                >
+                  <span
+                    v-show="loading"
+                    class="spinner-border spinner-border-sm"
+                  ></span>
+                  Submit
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Form>
     </div>
   </div>
 </template>
 
 <script>
+import { Form } from "vee-validate";
+
 export default {
   name: "AddRole",
+  components: {
+    Form,
+  },
+  data() {
+    return {
+      firstDose: "",
+      secondDose: "",
+      role: "",
+    };
+  },
+  inject: ["GStore"],
+  computed: {
+    showFDate: function () {
+      return this.firstDose == "";
+    },
+    showSDose: function () {
+      return this.secondDose == "";
+    },
+    showVaccine: function () {
+      return this.role != "ROLE_PATIENT";
+    },
+  },
 };
 </script>
 
 <style scoped>
-.profile-img-card {
-  width: auto;
-  height: 200px;
-  margin: 0 auto 15px;
-  display: block;
-  -moz-border-radius: 50%;
-  -webkit-border-radius: 50%;
-  border-radius: 50%;
-  margin-bottom: 20px;
-}
-
 #title {
   background-color: #00c2cb;
   margin-right: 5px;
@@ -77,7 +145,6 @@ export default {
 #button {
   color: white;
   background-color: #28787a;
-  width: 200px;
 }
 
 #content {
@@ -85,10 +152,12 @@ export default {
   border-radius: 10px;
   background-color: #9addd1;
   color: black;
-  margin: auto;
+  margin: 25px auto auto auto;
   padding-top: 20px;
+  justify-content: center;
 }
 h3 {
   margin-bottom: 20px;
+  color: #1a4f50;
 }
 </style>

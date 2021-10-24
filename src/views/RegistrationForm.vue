@@ -100,14 +100,15 @@
               </div>
 
               <!-- Add gender -->
-              <label for="gender"
+              <label
                 >Gender:
                 <select name="gender" id="gender">
-                  <option selected disabled>--Select Gender--</option>
+                  <option>--Select Gender--</option>
                   <option value="FEMALE">Female</option>
                   <option value="MALE">Male</option>
                   <option value="OTHERS">Others</option>
                 </select>
+                <ErrorMessage name="gender" class="error-feedback" />
               </label>
 
               <!-- Add photo -->
@@ -197,9 +198,7 @@ export default {
         .min(6, "Must be at least 6 characters!")
         .max(40, "Must be maximum 40 characters!"),
       age: yup.string().required("Age is required!"),
-      // gender: yup
-      //   .string()
-      //   .required("Gender is required!")
+      gender: yup.string().required("Gender is required!"),
     });
     return {
       successful: false,

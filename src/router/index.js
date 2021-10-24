@@ -13,6 +13,8 @@ import NetworkError from "@/views/NetworkError.vue";
 import Login from "@/views/LoginForm.vue";
 import Register from "@/views/RegistrationForm.vue";
 import AddRole from "@/views/PatientLayout//AddRole.vue";
+import GStore from "@/store";
+import AuthorityService from "../service/AuthorityService";
 
 const routes = [
   {
@@ -51,11 +53,6 @@ const routes = [
     component: NetworkError,
   },
   {
-    path: "/add-role",
-    name: "AddRole",
-    component: AddRole,
-  },
-  {
     path: "/availableVaccine",
     name: "AvailableVaccine",
     component: AvailableVaccine,
@@ -82,6 +79,9 @@ const routes = [
     props: true,
     component: Layout,
     beforeEnter: (to) => {
+      AuthorityService.getAuthorities().then(
+        (res) => (GStore.authorities = res.data)
+      );
       return PatientService.getPatient(to.params.id)
         .then((res) => {
           // console.log(res);
@@ -110,6 +110,22 @@ const routes = [
         name: "VaccineDetail",
         props: true,
         component: VaccineDetail,
+      },
+      {
+        path: "add-role",
+        name: "AddRole",
+        props: true,
+        component: AddRole,
+        beforeEnter: () => {
+          return VaccineService.getVaccines()
+            .then((response) => {
+              GStore.vaccines = response.data;
+            })
+            .catch(() => {
+              GStore.vaccines = null;
+              console.log("cannot load vaccine");
+            });
+        },
       },
     ],
   },

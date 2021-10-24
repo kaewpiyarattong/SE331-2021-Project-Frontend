@@ -5,7 +5,7 @@
       <div class="col-md-3 col-sm-12 p-4 mt-md-3" id="sidebar">
         <div class="container mb-3 p-3 rounded" id="insidebar">
           <h5>Vaccine Brands</h5>
-{{search}}
+          {{ search }}
 
           <div class="row mt-3">
             <img src="../assets/astrazeneca.png" style="width: 50px" />
@@ -40,7 +40,6 @@
                 v-model="search"
                 placeholder="Patient name"
               />
-
             </div>
             <!-- Filter the 1st dose -->
             <div class="form-group">
@@ -131,8 +130,8 @@
         </p>
         <p v-else>Filter found: {{ filterPatientList.length }}</p>
 
-        <div class="row row-cols-1 row-cols-md-3 g-4" >
-          <Card v-for="user in users" :user="user" :key="user.id" ></Card>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+          <Card v-for="user in users" :user="user" :key="user.id"></Card>
         </div>
         <nav
           class="navbar mt-10 justify-content-center"
@@ -205,7 +204,10 @@ export default {
   },
   async created() {
     await watchEffect(() => {
-      if (JSON.parse(localStorage.getItem("user")).authorities[0].name == "ROLE_ADMIN") {
+      if (
+        JSON.parse(localStorage.getItem("user")).authorities[0].name ==
+        "ROLE_ADMIN"
+      ) {
         UserService.getUsers(this.page, this.limit)
           .then((res) => {
             this.users = res.data;

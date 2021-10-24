@@ -1,7 +1,5 @@
 <template>
-  <div class="row justify-content-center mt-md-3 mt-sm-2">
-    
-  </div>
+  <div class="row justify-content-center mt-md-3 mt-sm-2"></div>
 </template>
 <script>
 export default {

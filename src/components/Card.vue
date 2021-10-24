@@ -61,8 +61,9 @@
           <h5 class="card-title">
             {{ user.user.surname }}
           </h5>
-          <p class="card-text" v-if="user.user.authorities.length">
-            {{ user.user.authorities[0].name }}
+          <p class="card-text">
+            Age:
+            {{ user.user.age }}
           </p>
         </div>
       </div>

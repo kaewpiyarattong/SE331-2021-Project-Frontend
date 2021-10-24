@@ -2,12 +2,17 @@
   <div class="nav mt-4">
     <div class="link container justify-content-between">
       <router-link :to="{ name: 'PatientDetail' }" class="btn m-1" id="button">
-        Patient's detail
+        Information
       </router-link>
       <router-link :to="{ name: 'VaccineDetail' }" class="btn m-1" id="button">
         Vaccine's detail
       </router-link>
-      <router-link :to="{ name: 'AddRole' }" class="btn m-1" id="button" v-if="isAdmin">
+      <router-link
+        :to="{ name: 'AddRole' }"
+        class="btn m-1"
+        id="button"
+        v-if="isAdmin"
+      >
         Add Role
       </router-link>
     </div>
@@ -23,7 +28,12 @@ export default {
   computed: {
     isAdmin() {
       return AuthService.hasRoles("ROLE_ADMIN");
-    }
+    },
+    // hideVaccineDetail(){
+    //   if(user.authorities[0].name != "ROLE_PATIENT"){
+    //     return true;
+    //   }
+    // }
   },
 };
 </script>
