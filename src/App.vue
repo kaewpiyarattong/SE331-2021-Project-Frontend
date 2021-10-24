@@ -4,32 +4,26 @@
     style="background-color: #6ec2b8"
   >
     <div class="container">
-      <router-link
-        :to="{ name: 'PatientList' }"
-        class="navbar-brand float-left"
-      >
+      <router-link :to="{ name: 'UserList' }" class="navbar-brand float-left">
         <img src="../src/assets/logo.png" style="width: 100px" />
       </router-link>
+
+      <div>
+        <a style="color: #09606a">
+          <font-awesome-icon icon="user" />
+          {{ GStore.currentUser.username }}
+        </a>
+      </div>
+
       <ul
         class="nav navbar-nav flex-md-row flex-sm-column flexed-top float-right"
       >
-        <li class="nav-item">
-          <router-link :to="{ name: 'Report' }" class="nav-link pr-3"
-            >Report</router-link
-          >
-        </li>
         <li class="nav-item">
           <router-link :to="{ name: 'AvailableVaccine' }" class="nav-link pr-3"
             >Available Vaccines</router-link
           >
         </li>
         <ul v-if="GStore.currentUser" class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <router-link to="/profile" class="nav-link">
-              <font-awesome-icon icon="user" />
-              {{ GStore.currentUser.username }}
-            </router-link>
-          </li>
           <li class="nav-item">
             <a class="nav-link" @click="logout">
               <font-awesome-icon icon="sign-out-alt" /> LogOut

@@ -4,7 +4,7 @@ export default {
   getUsersAll() {
     return apiClient.get("/users");
   },
-  getUserS(page, limit) {
+  getUsers(page, limit) {
     return apiClient.get("/users" + "?_page=" + page + "&_limit=" + limit);
   },
   getuser(id) {

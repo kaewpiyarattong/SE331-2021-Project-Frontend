@@ -8,6 +8,10 @@
       <router-link :to="{ name: 'VaccineDetail' }" class="btn m-1" id="button">
         Vaccine's detail
       </router-link>
+
+        <router-link :to="{ name: 'AddRole' }" class="btn m-1" id="button">
+        Add Role
+      </router-link>
     </div>
     <div class="pcontent container">
       <router-view></router-view>

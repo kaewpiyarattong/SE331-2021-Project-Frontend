@@ -2,9 +2,7 @@
   <div class="notfound container mt-5">
     <h2>Oops!</h2>
     <h3>The {{ resource }} you're looking for is not here.</h3>
-    <router-link :to="{ name: 'PatientList' }"
-      >Back to the home page</router-link
-    >
+    <router-link :to="{ name: 'UserList' }">Back to the home page</router-link>
   </div>
 </template>
 <script>

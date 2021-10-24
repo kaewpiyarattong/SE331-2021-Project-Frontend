@@ -94,6 +94,7 @@
               <span v-if="age == 75">+ </span>
             </div>
 
+            {{ isAdmin }}
             <!-- Filter Role -->
             <div class="form-group">
               <h5>Filter role</h5>
@@ -125,15 +126,11 @@
             //role == 'Any'
           "
         >
-          All patients: {{ totalPatients }}
+          All users: {{ totalUsers }}
         </p>
         <p v-else>Filter found: {{ filterPatientList.length }}</p>
         <div class="row row-cols-1 row-cols-md-3 g-4">
-          <Card
-            v-for="patient in patients"
-            :patient="patient"
-            :key="patient.id"
-          ></Card>
+          <Card v-for="user in users" :user="user" :key="user.id"></Card>
         </div>
         <nav
           class="navbar mt-10 justify-content-center"
@@ -143,7 +140,7 @@
             <li class="page-item">
               <router-link
                 class="page-link"
-                :to="{ name: 'PatientList', query: { page: page - 1 } }"
+                :to="{ name: 'UserList', query: { page: page - 1 } }"
                 >Previous</router-link
               >
             </li>
@@ -151,7 +148,7 @@
             <li class="page-item">
               <router-link
                 class="page-link"
-                :to="{ name: 'PatientList', query: { page: page + 1 } }"
+                :to="{ name: 'UserList', query: { page: page + 1 } }"
                 v-if="hasNextPage"
                 >Next</router-link
               >
@@ -169,20 +166,22 @@
 <script>
 import Card from "@/components/Card";
 import { watchEffect } from "@vue/runtime-core";
-import PatientService from "@/service/PatientService.js";
+import AuthService from "@/service/AuthService.js";
+import UserService from "@/service/UserService.js";
+import PatientService from "@/service/PatientService.js"
 
 export default {
-  name: "PatientList",
+  name: "UserList",
   components: {
     Card,
   },
   data() {
     return {
       filterShow: false,
-      patients: null,
+      users: null,
       search: "",
       age: 75,
-      totalPatients: null,
+      totalUsers: null,
       sort: false,
       selected: {
         fbrand: "Any",
@@ -204,15 +203,28 @@ export default {
   },
   async created() {
     await watchEffect(() => {
-      PatientService.getPatients(this.page, this.limit)
+      if(this.isAdmin){
+      UserService.getUsers(this.page, this.limit)
         .then((res) => {
           // console.log(res.data)
-          this.patients = res.data;
-          this.totalPatients = res.headers["x-total-count"];
+          this.users = res.data;
+          this.totalUsers = res.headers["x-total-count"];
         })
         .catch((e) => {
           console.log(e);
         });
+      }
+      else if(this.isDoctor){
+        PatientService.getPatients(this.page, this.limit)
+          .then((res) => {
+          // console.log(res.data)
+          this.users = res.data;
+          this.totalUsers = res.headers["x-total-count"];
+        })
+        .catch((e) => {
+          console.log(e);
+        });
+      }
     });
   },
 
@@ -233,64 +245,68 @@ export default {
       );
       this.window.scroll(0, 0);
     },
-    filterByName(patients) {
-      return patients.filter((patient) => {
-        return patient.firstname
-          .toLowerCase()
-          .includes(this.search.toLowerCase());
-      });
-    },
-    filterByFBrand(patients) {
-      return patients.filter((patient) => {
-        return patient.vaccination.firstdose.brand == this.selected.fbrand;
-      });
-    },
-    filterBySBrand(patients) {
-      return patients.filter((patient) => {
-        return patient.vaccination.seconddose != null
-          ? patient.vaccination.seconddose.brand == this.selected.sbrand
-          : null;
-      });
-    },
-    filterByGender(patients) {
-      return patients.filter((patient) => {
-        return patient.gender == this.selected.gender;
-      });
-    },
-    filterByAgeRange(patients) {
-      return patients.filter((patient) => {
-        return this.age < 75 ? patient.age <= this.age : patient.age >= 5;
-      });
-    },
-    filterByRole() {},
+    // filterByName(patients) {
+    //   return patients.filter((patient) => {
+    //     return patient.firstname
+    //       .toLowerCase()
+    //       .includes(this.search.toLowerCase());
+    //   });
+    // },
+    // filterByFBrand(patients) {
+    //   return patients.filter((patient) => {
+    //     return patient.vaccination.firstdose.brand == this.selected.fbrand;
+    //   });
+    // },
+    // filterBySBrand(patients) {
+    //   return patients.filter((patient) => {
+    //     return patient.vaccination.seconddose != null
+    //       ? patient.vaccination.seconddose.brand == this.selected.sbrand
+    //       : null;
+    //   });
+    // },
+    // filterByGender(patients) {
+    //   return patients.filter((patient) => {
+    //     return patient.gender == this.selected.gender;
+    //   });
+    // },
+    // filterByAgeRange(patients) {
+    //   return patients.filter((patient) => {
+    //     return this.age < 75 ? patient.age <= this.age : patient.age >= 5;
+    //   });
+    // },
+    // filterByRole() {},
   },
   computed: {
-    hasNextPage() {
-      let totalPage = Math.ceil(this.totalPatients / this.limit);
-      return this.page < totalPage;
-    },
-    filterPatientList() {
-      let npatients = this.patients;
-      if (this.search != "") {
-        npatients = this.filterByName(npatients);
+    //   hasNextPage() {
+    //     let totalPage = Math.ceil(this.totalPatients / this.limit);
+    //     return this.page < totalPage;
+    //   },
+    //   filterPatientList() {
+    //     let npatients = this.patients;
+    //     if (this.search != "") {
+    //       npatients = this.filterByName(npatients);
+    //     }
+    //     if (this.selected.fbrand != "Any") {
+    //       npatients = this.filterByFBrand(npatients);
+    //     }
+    //     if (this.selected.sbrand != "Any") {
+    //       npatients = this.filterBySBrand(npatients);
+    //     }
+    //     if (this.selected.gender != "Any") {
+    //       npatients = this.filterByGender(npatients);
+    //     }
+    //     if (this.age < 75) {
+    //       npatients = this.filterByAgeRange(npatients);
+    //     }
+    //     // filterByRole
+    //     return npatients;
+    //   },
+      isAdmin(){
+        return AuthService.hasRoles('ROLE_ADMIN')
+      },
+      isDoctor(){
+        return AuthService.hasRoles('ROLE_DOCTOR')
       }
-      if (this.selected.fbrand != "Any") {
-        npatients = this.filterByFBrand(npatients);
-      }
-
-      if (this.selected.sbrand != "Any") {
-        npatients = this.filterBySBrand(npatients);
-      }
-      if (this.selected.gender != "Any") {
-        npatients = this.filterByGender(npatients);
-      }
-      if (this.age < 75) {
-        npatients = this.filterByAgeRange(npatients);
-      }
-      // filterByRole
-
-      return npatients;
-    },
   },
 };
 </script>

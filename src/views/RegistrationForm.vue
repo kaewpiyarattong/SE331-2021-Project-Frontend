@@ -197,6 +197,9 @@ export default {
         .min(6, "Must be at least 6 characters!")
         .max(40, "Must be maximum 40 characters!"),
       age: yup.string().required("Age is required!"),
+      // gender: yup
+      //   .string()
+      //   .required("Gender is required!")
     });
     return {
       successful: false,
@@ -206,11 +209,11 @@ export default {
       files: [],
     };
   },
-  mounted() {
-    if (this.GStore.currentUser) {
-      this.$router.push("/event");
-    }
-  },
+  // mounted() {
+  //   if (this.GStore.currentUser) {
+  //     this.$router.push("/event");
+  //   }
+  // },
 
   methods: {
     // eslint-disable-next-line
@@ -218,7 +221,7 @@ export default {
       this.message = "";
       this.successful = false;
       this.loading = true;
-            
+
       Promise.all(
         this.files.map((file) => {
           return AuthService.uploadFile(file);

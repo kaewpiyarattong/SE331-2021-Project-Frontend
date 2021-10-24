@@ -92,7 +92,7 @@ export default {
       AuthService.login(user)
         .then((res) => {
           console.log(res);
-          this.$router.push({ name: "PatientList" });
+          this.$router.push({ name: "UserList" });
         })
         .catch(() => {
           this.message = "could not login";
