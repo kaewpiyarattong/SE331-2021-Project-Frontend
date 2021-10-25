@@ -278,10 +278,10 @@ export default {
     // filterByRole() {},
   },
   computed: {
-    //   hasNextPage() {
-    //     let totalPage = Math.ceil(this.totalPatients / this.limit);
-    //     return this.page < totalPage;
-    //   },
+      hasNextPage() {
+        let totalPage = Math.ceil(this.totalUsers / this.limit);
+        return this.page < totalPage;
+      },
     //   filterPatientList() {
     //     let npatients = this.patients;
     //     if (this.search != "") {
