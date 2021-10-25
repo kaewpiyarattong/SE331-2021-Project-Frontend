@@ -1,9 +1,7 @@
 <template>
-  <div class="row justify-content-center mt-md-3 mt-sm-2">
-    <div class="col-md-5 col-sm-12 mt-3" style="color: black;">
-        {{data.user}}
-        <p>{{data.user.username}}</p>
-      <!-- add User's image
+  <div class="row justify-content-center mt-md-3 mt-sm-2" v-if="GStore.user">
+    <div class="col-md-5 col-sm-12 mt-3">
+      <!--add User's image -->
       <img
         class="img-thumbnail"
           v-if="GStore.user.imageUrl.length"
@@ -15,25 +13,37 @@
         src="https://i.pinimg.com/474x/04/f0/42/04f0421b45476cc63c3266a70a9de1b7--worlds-largest-mondo.jpg"
         style="height: 300px"
         v-else
-      /> -->
+      /> 
     </div>
-    <!-- <div class="col-md-5 col-sm-12 mt-3" style="color: black;">
-        <h3>User's detail</h3>
-        <div class="container mt-5">
-            <p>
-                <strong id="title">Name:</strong>{{ data.user.firstname }}
-                {{ data.user.lastname }}
-            </p>
-        </div>
-    </div> -->
+    <div class="col-md-5 col-sm-12 p-4 mt-3" id="content">
+      <h3>User's detail</h3>
+      <div class="container mt-5">
+        <p>
+          <strong id="title">Name:</strong>{{ GStore.user.firstname }}
+          {{ GStore.user.lastname }}
+        </p>
+        <p><strong id="title">Tel:</strong>{{ GStore.user.tel }}</p>
+        <p>
+          <strong id="title">Email:</strong
+          ><span v-if="GStore.user.email">{{ GStore.user.email }}</span
+          ><span class="text text-danger" v-else>Email is not provided.</span>
+        </p>
+        <p><strong id="title">Gender:</strong>{{ GStore.user.gender }}</p>
+        <p>
+          <strong id="title">Age:</strong>{{ GStore.user.age }} years old
+        </p>
+        <p>
+          <strong id="title">Hometown:</strong>{{ GStore.user.hometown }}
+        </p>
+      </div>
     </div>
+   
+  </div>
 </template>
 <script>
 
 export default {
-    props: ['data']
-
-    
+  inject:['GStore']
 };
 </script>
 <style scoped>
@@ -42,7 +52,6 @@ export default {
   border-radius: 6px;
   background-color: #9addd1;
   margin-top: 15px;
-  
 }
 #title {
   background-color: #00c2cb;

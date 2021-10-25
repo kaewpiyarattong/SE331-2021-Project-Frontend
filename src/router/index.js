@@ -14,7 +14,7 @@ import Login from "@/views/LoginForm.vue";
 import Register from "@/views/RegistrationForm.vue";
 import AddRole from "@/views/UserLayout/AddRole.vue";
 import GStore from "@/store";
-// import AuthorityService from "../service/AuthorityService";
+import AuthorityService from "../service/AuthorityService";
 
 const routes = [
   {
@@ -79,32 +79,32 @@ const routes = [
     props: true,
     component: Layout,
     beforeEnter: (to) => {
-      // AuthorityService.getAuthorities()
-      //   .then((res) => (GStore.authorities = res.data))
-      //   .catch((err) => {
-      //     if (err.response && err.response.status == 404) {
-      //       return {
-      //         name: "NotFound",
-      //         params: { resource: "role" },
-      //       };
-      //     } else {
-      //       return { name: "NetworkError" };
-      //     }
-      //   });
-      // VaccineService.getVaccines()
-      //   .then((res) => (GStore.vaccines = res.data))
-      //   .catch((err) => {
-      //     if (err.response && err.response.status == 404) {
-      //       return {
-      //         name: "NotFound",
-      //         params: { resource: "vaccine" },
-      //       };
-      //     } else {
-      //       return { name: "NetworkError" };
-      //     }
-      //   });
-      
-      return  UserService.getUser(to.params.id)
+      AuthorityService.getAuthorities()
+        .then((res) => (GStore.authorities = res.data))
+        .catch((err) => {
+          if (err.response && err.response.status == 404) {
+            return {
+              name: "NotFound",
+              params: { resource: "role" },
+            };
+          } else {
+            return { name: "NetworkError" };
+          }
+        });
+      VaccineService.getVaccines()
+        .then((res) => (GStore.vaccines = res.data))
+        .catch((err) => {
+          if (err.response && err.response.status == 404) {
+            return {
+              name: "NotFound",
+              params: { resource: "vaccine" },
+            };
+          } else {
+            return { name: "NetworkError" };
+          }
+        });
+
+      UserService.getUser(to.params.id)
         .then((res) => (GStore.user = res.data))
         .catch((err) => {
           if (err.response && err.response.status == 404) {
@@ -116,7 +116,6 @@ const routes = [
             return { name: "NetworkError" };
           }
         });
-
     },
 
     children: [

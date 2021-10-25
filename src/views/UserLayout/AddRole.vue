@@ -1,7 +1,6 @@
 <template>
   <div class="col-md-12">
     <div class="col-md-9 col-sm-12" id="content">
-      {{ GStore.user }}
       <h3>Add Role & Vaccine</h3>
       <Form @submit="saveRole" :validation-schema="schema">
         <div v-if="!successful">

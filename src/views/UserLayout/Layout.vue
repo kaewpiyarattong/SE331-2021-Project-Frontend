@@ -22,7 +22,7 @@
       <!-- Delete Button -->
       <router-link
         :to="{ name: 'UserList' }"
-        @click="deleteUserById"
+        @click="deleteUserById(GStore.user.id)"
         class="btn m-1"
         id="deleteButton"
       >
@@ -31,7 +31,7 @@
     </div>
 
     <div class="pcontent container">
-      <router-view :data="GStore" />    
+      <router-view  />    
     </div>
   </div>
 </template>
@@ -52,9 +52,8 @@ export default {
     // }
   },
   methods: {
-    deleteUserById(user) {
-      console.log(user);
-      UserService.deleteUserById(user.id);
+    deleteUserById(id) {
+      UserService.deleteUserById(id);
       // return this.$router.go()
     },
   },
