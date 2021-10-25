@@ -5,8 +5,6 @@
       <div class="col-md-3 col-sm-12 p-4 mt-md-3" id="sidebar">
         <div class="container mb-3 p-3 rounded" id="insidebar">
           <h5>Vaccine Brands</h5>
-          {{ search }}
-
           <div class="row mt-3">
             <img src="../assets/astrazeneca.png" style="width: 50px" />
             <label class="text mt-3">Astrazeneca</label>
@@ -33,42 +31,13 @@
           <form>
             <!-- Filter name -->
             <div class="form-group">
-              <h5>Search by name:</h5>
+              <h5>Search by name or username:</h5>
               <input
                 class="form-control"
                 type="text"
                 v-model="search"
-                placeholder="Patient name"
+                placeholder="Name or Username"
               />
-            </div>
-            <!-- Filter the 1st dose -->
-            <div class="form-group">
-              <h5>Filter the 1st dose</h5>
-              <select
-                class="form-control"
-                id="fbrand"
-                v-model="selected.fbrand"
-              >
-                <option>Any</option>
-                <option>Astrazeneca</option>
-                <option>Sinovac</option>
-                <option>Sinopharm</option>
-              </select>
-            </div>
-
-            <!-- Filter the 2nd dose -->
-            <div class="form-group">
-              <h5>Filter the 2nd dose</h5>
-              <select
-                class="form-control"
-                id="sbrand"
-                v-model="selected.sbrand"
-              >
-                <option>Any</option>
-                <option>Astrazeneca</option>
-                <option>Sinovac</option>
-                <option>Sinopharm</option>
-              </select>
             </div>
 
             <!-- Filter gender -->
@@ -77,12 +46,12 @@
               <select
                 class="form-control"
                 id="gender"
-                v-model="selected.gender"
+                v-model="gender"
               >
-                <option>Any</option>
-                <option>Male</option>
-                <option>Female</option>
-                <option>Others</option>
+                <option value="">Any</option>
+                <option value="MALE">Male</option>
+                <option value="FEMALE">Female</option>
+                <option value="OTHERS">Others</option>
               </select>
             </div>
 
@@ -98,12 +67,12 @@
             <!-- Filter Role -->
             <div class="form-group">
               <h5>Filter role</h5>
-              <select class="form-control" id="role" v-model="selected.role">
-                <option>Any</option>
-                <option>Admin</option>
-                <option>Docter</option>
-                <option>Patient</option>
-                <option>Register</option>
+              <select class="form-control" id="role" >
+                <option value="">Any</option>
+                <option value="ROLE_ADMIN">Admin</option>
+                <option value="ROLE_DOCTOR">Docter</option>
+                <option value="ROLE_PATIENT">Patient</option>
+                <option>No role</option>
               </select>
             </div>
           </form>
@@ -117,18 +86,11 @@
       </div>
       <div class="col-md-8 col-sm-12 p-3 mt-3 ml-md-4" id="content">
         <p
-          v-if="
-            selected.fbrand == 'Any' &&
-            selected.sbrand == 'Any' &&
-            selected.gender == 'Any' &&
-            search == '' &&
-            age == 75
-            //role == 'Any'
-          "
+          v-if="search!=null"
         >
           All users: {{ totalUsers }}
         </p>
-        <p v-else>Filter found: {{ filterPatientList.length }}</p>
+        <p v-else>Filter found: {{ totalUsers }}</p>
 
         <div class="row row-cols-1 row-cols-md-3 g-4">
           <Card v-for="user in users" :user="user" :key="user.id"></Card>
@@ -181,15 +143,9 @@ export default {
       filterShow: false,
       users: null,
       search: "",
+      gender:"",
       age: 75,
-      totalUsers: null,
-      sort: false,
-      selected: {
-        fbrand: "Any",
-        sbrand: "Any",
-        gender: "Any",
-        role: "Any",
-      },
+      totalUsers: null,      
     };
   },
   props: {
@@ -208,7 +164,8 @@ export default {
         JSON.parse(localStorage.getItem("user")).authorities[0].name ==
         "ROLE_ADMIN"
       ) {
-        UserService.getUsers(this.page, this.limit)
+        if(this.search!= null){
+          UserService.getUsersName(this.search, this.gender, this.page, this.limit)
           .then((res) => {
             this.users = res.data;
             this.totalUsers = res.headers["x-total-count"];
@@ -216,6 +173,18 @@ export default {
           .catch((e) => {
             console.log(e);
           });
+        }else{
+          UserService.getUsers(this.page, this.limit)
+          .then((res) => {
+            this.users = res.data;
+            this.totalUsers = res.headers["x-total-count"];
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+        }
+
+       
       } else {
         PatientService.getPatients(this.page, this.limit)
           .then((res) => {
@@ -231,12 +200,7 @@ export default {
 
   methods: {
     clearFilter() {
-      this.selected = {
-        fbrand: "Any",
-        sbrand: "Any",
-        gender: "Any",
-        role: "Any",
-      };
+     
       this.search = "";
       this.age = 75;
       this.$swal.fire(

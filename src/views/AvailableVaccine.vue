@@ -51,7 +51,7 @@
           </p>
           <p>
             <span class="font-weight-bold p-1 rounded mr-1" id="title"
-              >Interval between the first and second dose:</span
+              >Interval between the first & second dose:</span
             >
             {{ vaccine.duration }}
           </p>

@@ -52,9 +52,12 @@
         />
 
         <div class="card-body">
-          <h6 class="card-title">
-            {{ user.user.firstname }} {{ user.user.lastname }}
-          </h6>
+          <h5 class="card-title">
+            {{ user.user.firstname }}
+          </h5>
+          <h5 class="card-title">
+            {{ user.user.lastname }}
+          </h5>
           <p class="card-text">
             Age:
             {{ user.user.age }}
