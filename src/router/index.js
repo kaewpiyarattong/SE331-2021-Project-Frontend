@@ -6,7 +6,6 @@ import UserInformation from "@/views/UserLayout/UserInformation.vue";
 import VaccineDetail from "@/views/UserLayout/VaccineDetail.vue";
 import UserService from "@/service/UserService";
 import VaccineService from "@/service/VaccineService";
-import Gstore from "@/store";
 import Nprogress from "nprogress";
 import NotFound from "@/views/NotFound.vue";
 import NetworkError from "@/views/NetworkError.vue";
@@ -59,7 +58,7 @@ const routes = [
     beforeEnter: () => {
       return VaccineService.getVaccines()
         .then((res) => {
-          Gstore.vaccines = res.data;
+          GStore.vaccines = res.data;
         })
         .catch((err) => {
           if (err.response && err.response.status == 404) {

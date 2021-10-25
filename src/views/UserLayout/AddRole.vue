@@ -27,7 +27,7 @@
               <!-- {{Gstore.authorities}} -->
 
               <!-- Add 1st vaccine -->
-              <div class="form-group" v-if="!showVaccine">
+              <div class="form-group" v-if="showVaccine">
                 <select
                   class="form-control"
                   v-model="firstDose"
@@ -47,7 +47,7 @@
               </div>
 
               <!-- Add 1st date date -->
-              <div class="form-group" v-if="!showFDate">
+              <div class="form-group" v-if="!showFDate && showVaccine">
                 <label
                   >Date:
                   <input type="date" id="fdate" name="fdate" />
@@ -55,7 +55,7 @@
               </div>
 
               <!-- Add 2nd vaccine -->
-              <div class="form-group" v-if="!showFDate">
+              <div class="form-group" v-if="!showFDate && showVaccine">
                 <select
                   class="form-control"
                   v-model="secondDose"
@@ -75,7 +75,7 @@
               </div>
 
               <!-- Add 2st date date -->
-              <div class="form-group" v-if="!showSDose">
+              <div class="form-group" v-if="!showSDose && showVaccine">
                 <label
                   >Date:
                   <input type="date" id="sdate" name="sdate" />
@@ -84,15 +84,7 @@
 
               <!-- button Submit -->
               <div class="form-group">
-                <button
-                  id="button"
-                  class="btn btn-primary btn-block"
-                  :disabled="loading"
-                >
-                  <span
-                    v-show="loading"
-                    class="spinner-border spinner-border-sm"
-                  ></span>
+                <button id="button" class="btn btn-primary btn-block">
                   Submit
                 </button>
               </div>
@@ -121,14 +113,14 @@ export default {
   },
   inject: ["GStore"],
   computed: {
-    showFDate: function () {
+    showFDate() {
       return this.firstDose == "";
     },
-    showSDose: function () {
+    showSDose() {
       return this.secondDose == "";
     },
-    showVaccine: function () {
-      return this.role != "ROLE_PATIENT";
+    showVaccine() {
+      return this.role == "ROLE_PATIENT";
     },
   },
 };

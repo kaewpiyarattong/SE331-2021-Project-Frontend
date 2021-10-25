@@ -4,8 +4,8 @@
       <!--add User's image -->
       <img
         class="img-thumbnail"
-          v-if="GStore.user.imageUrl.length"
-          :src="GStore.user.imageUrl"
+        v-if="GStore.user.imageUrl.length"
+        :src="GStore.user.imageUrl"
         style="height: 300px"
       />
       <img
@@ -13,7 +13,7 @@
         src="https://i.pinimg.com/474x/04/f0/42/04f0421b45476cc63c3266a70a9de1b7--worlds-largest-mondo.jpg"
         style="height: 300px"
         v-else
-      /> 
+      />
     </div>
     <div class="col-md-5 col-sm-12 p-4 mt-3" id="content">
       <h3>User's detail</h3>
@@ -29,27 +29,21 @@
           ><span class="text text-danger" v-else>Email is not provided.</span>
         </p>
         <p><strong id="title">Gender:</strong>{{ GStore.user.gender }}</p>
-        <p>
-          <strong id="title">Age:</strong>{{ GStore.user.age }} years old
-        </p>
-        <p>
-          <strong id="title">Hometown:</strong>{{ GStore.user.hometown }}
-        </p>
+        <p><strong id="title">Age:</strong>{{ GStore.user.age }} years old</p>
+        <p><strong id="title">Hometown:</strong>{{ GStore.user.hometown }}</p>
       </div>
     </div>
-   
   </div>
 </template>
 <script>
-
 export default {
-  inject:['GStore']
+  inject: ["GStore"],
 };
 </script>
 <style scoped>
 #content {
-  border: 1px solid #35393d;
-  border-radius: 6px;
+  border: 1px solid #39bbc7;
+  border-radius: 10px;
   background-color: #9addd1;
   margin-top: 15px;
 }

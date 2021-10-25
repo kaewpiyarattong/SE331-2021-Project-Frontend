@@ -1,173 +1,105 @@
 <template>
-  <div class="row justify-content-center mt-md-4 mt-sm-4">
-    <h2 style="color: black">Vaccine's detail</h2>
-    <div class="container col-md-12 col-sm-12" id="content">
-      <div class="row justify-content-center"></div>
-    </div>
-
-    <!-- Show seccond dose infornation if haven't got seccond dose show "Have not got seccond dose yet" -->
+  <div class="row justify-content-center mt-md-4 mt-sm-4" v-if="GStore.user">
     <div
-      class="container p-4 mt-3"
+      class="container col-md-9 col-sm-12"
       id="content"
-      v-if="!Gstore.patient.vaccination.seconddose"
-    >
-      <h2 class="text-danger">Have not got seccond dose yet</h2>
-    </div>
-    <div
-      class="container p-4 mt-3"
-      id="content"
-      v-if="Gstore.patient.vaccination.seconddose"
+      v-for="(vaccine, index) in GStore.user.vaccination"
+      :key="index"
     >
       <div class="row justify-content-center">
-        <div class="col-md-5 col-sm-12">
-          <!-- add vaccine's image -->
+        <!-- {{vaccine}} -->
+        <!-- 1st Dose -->
+        <div class="container col-md-4 col-sm-12">
           <img
-            class="img-fluid"
-            style="height: 250px"
-            src="../../assets/astrazeneca.png"
-            v-if="Gstore.patient.vaccination.seconddose.brand == 'Astrazeneca'"
-          />
-          <img
-            class="img-fluid"
-            style="height: 250px"
-            src="../../assets/sinopharm.png"
-            v-else-if="
-              Gstore.patient.vaccination.seconddose.brand == 'Sinopharm'
-            "
-          />
-          <img
-            class="img-fluid"
-            style="height: 250px"
-            src="../../assets//sinovac.png"
-            v-else
+            class="img"
+            v-if="vaccine.imageUrls.length"
+            :src="vaccine.imageUrls[0]"
+            style="height: 150px"
           />
         </div>
-        <div class="col-md-5 col-sm-12">
-          <h3>Second dose</h3>
-          <p>
-            <span class="font-weight-bold p-1 rounded" id="title">Brand:</span>
-            {{ Gstore.patient.vaccination.seconddose.brand }}
-          </p>
+        <div class="container col-md-7 col-sm-12">
+          <h4 id="title1">Dose {{ index + 1 }} detail</h4>
+          <!-- add Vaccine Brand -->
           <p>
             <span class="font-weight-bold p-1 rounded mr-1" id="title"
-              >Injected at:</span
+              >Brand:</span
             >
-            <!-- add Vaccine Brand Name -->
-            {{ Gstore.patient.vaccination.firstdose.injected_at }}
+            {{ vaccine.brand }}
           </p>
+          <!-- Add Vaccine Inject -->
           <p>
-            <span class="font-weight-bold p-1 rounded" id="title"
-              >Timestamp:</span
+            <span class="font-weight-bold p-1 rounded mr-1" id="title"
+              >Injected on:</span
             >
-            {{ Gstore.patient.vaccination.seconddose.timestamp }}
+            {{ GStore.user.injectedAt[index] }}
           </p>
-
-          <!-- suggestion box seccond dose -->
-          <form @submit.prevent="addSuggest(2)">
-            <input
-              type="text"
-              placeholder="Suggest for 2nd dose"
-              v-model="suggest2"
-              required
-            />
-            <button class="btn btn-success btn-sm ml-1">Add</button>
-          </form>
-          <br />
-          <p class="font-weight-bold p-1 d-inline rounded" id="title">
-            Suggestion from doctor:
-          </p>
-          <!-- suggestion box second dose if no suggestion show  "No suggestion yet"-->
-          <ul
-            v-if="Gstore.patient.vaccination.seconddose.suggestion.length != 0"
-            style="list-style-type: none"
-          >
-            <li
-              v-for="(val, key) in Gstore.patient.vaccination.seconddose
-                .suggestion"
-              :key="key"
+          <!-- Add Suggestion -->
+          <p>
+            <span class="font-weight-bold p-1 rounded mr-1" id="title"
+              >Suggestion:</span
             >
-              {{ val }}
-            </li>
-          </ul>
-          <p class="font-weight-bold text-danger mt-3" v-else>
-            No suggestion yet
+            {{ GStore.user.suggestion }}
           </p>
         </div>
       </div>
     </div>
+    <div
+      class="container col-md-9 col-sm-12"
+      id="content"
+      v-if="GStore.user.vaccination.length"
+    >
+      <form @submit.prevent="addSuggest">
+        <select v-model="selectDose" id="selectOption">
+          <option value="">--Select Dose--</option>
+          <option
+            v-if="GStore.user.vaccination.length > 0"
+            value="First Dose: "
+          >
+            1 st Dose
+          </option>
+          <option
+            v-if="GStore.user.vaccination.length > 1"
+            value="Second Dose: "
+          >
+            2 nd Dose
+          </option>
+        </select>
+        <input id="input" type="text" v-model="suggestion" v-if="!showInput" />
+        <button id="button" class="btn btn-primary btn-block">Submit</button>
+      </form>
+    </div>
+
+    <div class="container col-md-9 col-sm-12" v-else style="color: red">
+      <h2>Have not add vaccine yet</h2>
+    </div>
   </div>
 </template>
 <script>
-//
-// import PatientService from "@/service/PatientService.js";
+import UserService from "@/service/UserService";
 
 export default {
-  inject: ["Gstore"],
+  inject: ["GStore"],
   data() {
     return {
-      suggest1: "",
-      suggest2: "",
+      suggestion: "",
+      selectDose: "",
       newData: null,
     };
   },
   methods: {
-    addSuggest(dose) {
-      let myTarget = JSON.parse(JSON.stringify(this.Gstore.patient));
-      if (dose == 1) {
-        myTarget.vaccination.firstdose.suggestion = [
-          ...myTarget.vaccination.firstdose.suggestion,
-          this.suggest1,
-        ];
-      } else {
-        myTarget.vaccination.seconddose.suggestion = [
-          ...myTarget.vaccination.seconddose.suggestion,
-          this.suggest2,
-        ];
-      }
+    addSuggest() {
+      let myTarget = JSON.parse(JSON.stringify(this.GStore.user));
+      myTarget.suggestion = [...myTarget.suggestion, this.combineSuggest];
       this.newData = myTarget;
-      this.confirmAddSuggest(dose);
+      UserService.postSuggestion(this.GStore.user.id, this.newData);
     },
-    confirmAddSuggest(dose) {
-      // Use sweetalert2
-      this.$swal
-        .fire({
-          title: "Do you want to add the suggestion?",
-          showDenyButton: true,
-          confirmButtonText: `Save`,
-          denyButtonText: `Cancel`,
-        })
-        .then((result) => {
-          /* Read more about isConfirmed, isDenied below */
-          if (result.isConfirmed) {
-            this.$swal.fire("Suggestion saved!", "", "success");
-            if (dose == 1) {
-              this.Gstore.patient.vaccination.firstdose.suggestion = [
-                ...this.Gstore.patient.vaccination.firstdose.suggestion,
-                this.suggest1,
-              ];
-              this.suggest1 = "";
-            } else {
-              this.Gstore.patient.vaccination.seconddose.suggestion = [
-                ...this.Gstore.patient.vaccination.seconddose.suggestion,
-                this.suggest2,
-              ];
-              this.suggest2 = "";
-            }
-            // PatientService.postSuggestion(
-            //   this.Gstore.patient.id,
-            //   this.newData
-            // ).catch((err) => {
-            //   console.log(err);
-            // });
-
-            // setTimeout(() => {
-            //   this.$router.go();
-            // }, 1000);
-          } else {
-            this.suggest1 = "";
-            this.suggest2 = "";
-          }
-        });
+  },
+  computed: {
+    showInput() {
+      return this.selectDose == "";
+    },
+    combineSuggest() {
+      return this.selectDose + this.suggestion;
     },
   },
 };
@@ -177,13 +109,36 @@ export default {
 #content {
   border: 1px solid #35393d;
   border-radius: 6px;
-  background-color: #9addd1;
+  background-color: #ffffff;
   padding-top: 20px;
+  margin: 10px auto 10px auto;
 }
 #title {
   background-color: #00c2cb;
   margin-right: 5px;
   border-radius: 2px;
+  padding-left: 5px;
+}
+#button {
+  color: white;
+  background-color: #28787a;
+  margin: 10px auto 10px auto;
+  width: 150px;
+}
+#selectOption {
+  margin-right: 30px;
+  border-radius: 3px;
+  background-color: #54d3c2;
+}
+#input {
+  border-radius: 3px;
+  width: 320px;
+  background-color: #b7e9e0;
+}
+#title1 {
+  background-color: #70dbc4;
+  margin-right: 5px;
+  border-radius: 7px;
   padding-left: 5px;
 }
 </style>
