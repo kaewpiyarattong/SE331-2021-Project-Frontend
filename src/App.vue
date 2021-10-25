@@ -41,7 +41,7 @@
     class="navbar navbar-light mt-4 justify-content-center flex-nowrap flex-row"
     style="background-color: #6ec2b8; color: black"
   >
-    <div class="text-center p-3">© 2021 Copyright: Krittaporn and Tulyawat</div>
+    <div class="text-center p-3">© 2021 Copyright: Tong and Kai</div>
   </nav>
 </template>
 
