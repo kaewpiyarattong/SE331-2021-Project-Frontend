@@ -100,16 +100,12 @@
               </div>
 
               <!-- Add gender -->
-              <label
-                >Gender:
-                <select name="gender" id="gender">
-                  <option>--Select Gender--</option>
-                  <option value="FEMALE">Female</option>
-                  <option value="MALE">Male</option>
-                  <option value="OTHERS">Others</option>
-                </select>
-                <ErrorMessage name="gender" class="error-feedback" />
-              </label>
+              <div class="form-group">
+                <Field name="gender" type="radio" value="FEMALE"></Field> Female
+                <Field name="gender" type="radio" value="MALE"></Field> Male
+                <Field name="gender" type="radio" value="OTHERS"></Field> Others
+                <p><ErrorMessage name="gender" class="error-feedback"/></p>
+              </div>
 
               <!-- Add photo -->
               <div class="form-group">
@@ -198,7 +194,9 @@ export default {
         .min(6, "Must be at least 6 characters!")
         .max(40, "Must be maximum 40 characters!"),
       age: yup.string().required("Age is required!"),
-      gender: yup.string().required("Gender is required!"),
+      gender: yup
+        .string()
+        .required("Gender is required!"),
     });
     return {
       successful: false,
@@ -239,6 +237,7 @@ export default {
     handleImages(files) {
       this.files = files;
     },
+
   },
 };
 </script>
