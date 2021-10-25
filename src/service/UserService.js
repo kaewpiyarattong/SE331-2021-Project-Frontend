@@ -12,10 +12,13 @@ export default {
       "/users" + "?_page=" + page + "&_limit=" + limit + "name=" + name
     );
   },
-  getuser(id) {
+  getUser(id) {
     return apiClient.get("/user/" + id);
   },
   postSuggestion(id, user) {
     return apiClient.put("/patient/" + id, user);
+  },
+  deleteUserById(id) {
+    return apiClient.delete("/user/" + id);
   },
 };

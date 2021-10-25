@@ -174,7 +174,7 @@ import PatientService from "@/service/PatientService.js";
 export default {
   name: "UserList",
   components: {
-    Card,
+  Card,
   },
   data() {
     return {

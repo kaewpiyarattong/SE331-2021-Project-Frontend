@@ -104,7 +104,7 @@
                 <Field name="gender" type="radio" value="FEMALE"></Field> Female
                 <Field name="gender" type="radio" value="MALE"></Field> Male
                 <Field name="gender" type="radio" value="OTHERS"></Field> Others
-                <p><ErrorMessage name="gender" class="error-feedback"/></p>
+                <p><ErrorMessage name="gender" class="error-feedback" /></p>
               </div>
 
               <!-- Add photo -->
@@ -194,9 +194,7 @@ export default {
         .min(6, "Must be at least 6 characters!")
         .max(40, "Must be maximum 40 characters!"),
       age: yup.string().required("Age is required!"),
-      gender: yup
-        .string()
-        .required("Gender is required!"),
+      gender: yup.string().required("Gender is required!"),
     });
     return {
       successful: false,
@@ -237,7 +235,6 @@ export default {
     handleImages(files) {
       this.files = files;
     },
-
   },
 };
 </script>

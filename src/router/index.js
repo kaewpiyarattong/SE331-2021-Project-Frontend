@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 import UserList from "../views/UserList.vue";
 import AvailableVaccine from "@/views/AvailableVaccine.vue";
-import Layout from "@/views/PatientLayout/Layout.vue";
-import PatientDetail from "@/views/PatientLayout/PatientDetail.vue";
-import VaccineDetail from "@/views/PatientLayout/VaccineDetail.vue";
-import PatientService from "@/service/PatientService";
+import Layout from "@/views/UserLayout/Layout.vue";
+import UserInformation from "@/views/UserLayout/UserInformation.vue";
+import VaccineDetail from "@/views/UserLayout/VaccineDetail.vue";
+import UserService from "@/service/UserService";
 import VaccineService from "@/service/VaccineService";
 import Gstore from "@/store";
 import Nprogress from "nprogress";
@@ -12,9 +12,9 @@ import NotFound from "@/views/NotFound.vue";
 import NetworkError from "@/views/NetworkError.vue";
 import Login from "@/views/LoginForm.vue";
 import Register from "@/views/RegistrationForm.vue";
-import AddRole from "@/views/PatientLayout//AddRole.vue";
+import AddRole from "@/views/UserLayout/AddRole.vue";
 import GStore from "@/store";
-import AuthorityService from "../service/AuthorityService";
+// import AuthorityService from "../service/AuthorityService";
 
 const routes = [
   {
@@ -74,36 +74,56 @@ const routes = [
     },
   },
   {
-    path: "/patient/:id",
+    path: "/user/:id",
     name: "Layout",
     props: true,
     component: Layout,
     beforeEnter: (to) => {
-      AuthorityService.getAuthorities().then(
-        (res) => (GStore.authorities = res.data)
-      );
-      return PatientService.getPatient(to.params.id)
-        .then((res) => {
-          // console.log(res);
-          Gstore.patient = res.data;
-        })
+      // AuthorityService.getAuthorities()
+      //   .then((res) => (GStore.authorities = res.data))
+      //   .catch((err) => {
+      //     if (err.response && err.response.status == 404) {
+      //       return {
+      //         name: "NotFound",
+      //         params: { resource: "role" },
+      //       };
+      //     } else {
+      //       return { name: "NetworkError" };
+      //     }
+      //   });
+      // VaccineService.getVaccines()
+      //   .then((res) => (GStore.vaccines = res.data))
+      //   .catch((err) => {
+      //     if (err.response && err.response.status == 404) {
+      //       return {
+      //         name: "NotFound",
+      //         params: { resource: "vaccine" },
+      //       };
+      //     } else {
+      //       return { name: "NetworkError" };
+      //     }
+      //   });
+      
+      return  UserService.getUser(to.params.id)
+        .then((res) => (GStore.user = res.data))
         .catch((err) => {
           if (err.response && err.response.status == 404) {
             return {
               name: "NotFound",
-              params: { resource: "patient" },
+              params: { resource: "user" },
             };
           } else {
             return { name: "NetworkError" };
           }
         });
+
     },
 
     children: [
       {
         path: "",
-        name: "PatientDetail",
-        component: PatientDetail,
+        name: "UserInformation",
+        component: UserInformation,
       },
       {
         path: "vaccinedetail",
@@ -116,16 +136,6 @@ const routes = [
         name: "AddRole",
         props: true,
         component: AddRole,
-        beforeEnter: () => {
-          return VaccineService.getVaccines()
-            .then((response) => {
-              GStore.vaccines = response.data;
-            })
-            .catch(() => {
-              GStore.vaccines = null;
-              console.log("cannot load vaccine");
-            });
-        },
       },
     ],
   },

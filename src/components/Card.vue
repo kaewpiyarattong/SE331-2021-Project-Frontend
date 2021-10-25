@@ -1,7 +1,7 @@
 <template>
   <div class="col-md-4 mt-2">
     <router-link
-      :to="{ name: 'PatientDetail', params: { id: user.id } }"
+      :to="{ name: 'UserInformation', params: { id: user.id } }"
       style="text-decoration: none"
     >
       <!-- Show information for Admin -->
@@ -24,10 +24,7 @@
 
         <div class="card-body">
           <h5 class="card-title">
-            {{ user.firstname }}
-          </h5>
-          <h5 class="card-title">
-            {{ user.surname }}
+            {{ user.username }}
           </h5>
           <p class="card-text" v-if="user.authorities.length">
             {{ user.authorities[0].name }}
@@ -55,12 +52,9 @@
         />
 
         <div class="card-body">
-          <h5 class="card-title">
-            {{ user.user.firstname }}
-          </h5>
-          <h5 class="card-title">
-            {{ user.user.surname }}
-          </h5>
+          <h6 class="card-title">
+            {{ user.user.firstname }} {{ user.user.lastname }}
+          </h6>
           <p class="card-text">
             Age:
             {{ user.user.age }}
@@ -100,6 +94,7 @@ export default {
   margin-bottom: 20px;
   padding-bottom: 8px;
   border-radius: 10px;
+  align-items: center;
 }
 .card:hover {
   background-color: #46ccbc;

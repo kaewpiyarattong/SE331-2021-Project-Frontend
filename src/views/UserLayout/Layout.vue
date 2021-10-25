@@ -1,7 +1,11 @@
 <template>
   <div class="nav mt-4">
     <div class="link container justify-content-between">
-      <router-link :to="{ name: 'PatientDetail' }" class="btn m-1" id="button">
+      <router-link
+        :to="{ name: 'UserInformation' }"
+        class="btn m-1"
+        id="button"
+      >
         Information
       </router-link>
       <router-link :to="{ name: 'VaccineDetail' }" class="btn m-1" id="button">
@@ -13,27 +17,46 @@
         id="button"
         v-if="isAdmin"
       >
-        Add Role
+        Add Role & Vaccine
+      </router-link>
+      <!-- Delete Button -->
+      <router-link
+        :to="{ name: 'UserList' }"
+        @click="deleteUserById"
+        class="btn m-1"
+        id="deleteButton"
+      >
+        Delete
       </router-link>
     </div>
+
     <div class="pcontent container">
-      <router-view></router-view>
+      <router-view :data="GStore" />    
     </div>
   </div>
 </template>
 <script>
 import AuthService from "@/service/AuthService.js";
+import UserService from "@/service/UserService.js";
 
 export default {
+  inject: ["GStore"],
   computed: {
     isAdmin() {
       return AuthService.hasRoles("ROLE_ADMIN");
     },
     // hideVaccineDetail(){
-    //   if(user.authorities[0].name != "ROLE_PATIENT"){
+    //   if(Gstore. != "ROLE_PATIENT"){
     //     return true;
     //   }
     // }
+  },
+  methods: {
+    deleteUserById(user) {
+      console.log(user);
+      UserService.deleteUserById(user.id);
+      // return this.$router.go()
+    },
   },
 };
 </script>
@@ -52,5 +75,9 @@ export default {
   background-color: #65c4c4;
   border: 2px solid #73bdbd;
   color: black;
+}
+#deleteButton {
+  background-color: #b10000;
+  color: rgb(255, 255, 255);
 }
 </style>
