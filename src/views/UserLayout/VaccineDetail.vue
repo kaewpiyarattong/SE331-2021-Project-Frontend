@@ -38,7 +38,12 @@
             <span class="font-weight-bold p-1 rounded mr-1" id="title"
               >Suggestion:</span
             >
-            {{ GStore.user.suggestion }}
+            <ul v-if="index == 0">
+              <li v-for="(s,i) in showSuggestF" :key="i" >{{s}}</li>
+            </ul>
+            <ul v-if="index == 1">
+              <li v-for="(s,i) in showSuggestS" :key="i" >{{s}}</li>
+            </ul>
           </p>
         </div>
       </div>
@@ -79,6 +84,7 @@
 <script>
 import UserService from "@/service/UserService";
 import AuthService from "@/service/AuthService.js";
+import PatientService from "@/service/PatientService.js";
 
 export default {
   inject: ["GStore"],
@@ -91,10 +97,21 @@ export default {
   },
   methods: {
     addSuggest() {
-      let myTarget = JSON.parse(JSON.stringify(this.GStore.user));
-      myTarget.suggestion = [...myTarget.suggestion, this.combineSuggest];
-      this.newData = myTarget;
-      UserService.postSuggestion(this.GStore.user.id, this.newData);
+        let myTarget = JSON.parse(JSON.stringify(this.GStore.user));
+        if(this.GStore.currentUser.authorities[0].name == "ROLE_ADMIN"){
+          myTarget.suggestion = [...myTarget.suggestion, this.combineSuggest];
+          this.newData = myTarget;
+          UserService.updateUser(this.GStore.user.id, this.newData);
+        }else{
+          myTarget.suggestion = [...myTarget.suggestion, this.combineSuggest];
+          this.newData = myTarget;
+          let obj = {}
+          obj["id"] = this.$router.currentRoute.value.params.id
+          obj["user"] = this.newData
+         console.log(obj)
+          PatientService.updateUser(this.$router.currentRoute.value.params.id, obj)
+        }
+      this.$router.go();
     },
     // hideVaccine(){
     //   if(this.GStore.user.vaccination.length == 0){
@@ -112,6 +129,14 @@ export default {
     isDoctor() {
       return AuthService.hasRoles("ROLE_DOCTOR");
     },
+    showSuggestF(){
+              // return this.GStore.user.suggestion.filter(item => item.startsWith("Second"))
+        return this.GStore.user.suggestion.filter(item => item.startsWith("First"))
+    },
+    showSuggestS(){
+        return this.GStore.user.suggestion.filter(item => item.startsWith("Second"))
+    }
+    
   },
  
 };

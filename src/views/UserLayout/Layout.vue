@@ -36,15 +36,8 @@
         </div>
         <!-- Delete Button -->
         <div class="col-md-1 col-sm-12 setButton">
-          <router-link
-            :to="{ name: 'UserList' }"
-            @click="deleteUserById(GStore.user.id)"
-            class="btn m-1"
-            id="deleteButton"
-            v-if="isAdmin"
-          >
-            Delete
-          </router-link>
+          <a type="button" class="btn btn-danger btn m-1" @click="deleteUserById(GStore.user.id)">Delete</a>
+
         </div>
       </div>
     </div>
@@ -72,8 +65,9 @@ export default {
   },
   methods: {
     deleteUserById(id) {
+      // console.log(id)
       UserService.deleteUserById(id);
-      // return this.$router.go()
+      this.$router.push({name:"UserList"})
     },
   },
 };

@@ -23,7 +23,7 @@ export default {
   getPatient(id) {
     return apiClient.get("/patient/" + id);
   },
-  postSuggestion(id, user) {
-    return apiClient.put("/patient/" + id, user);
+  updateUser(id, user) {
+    return apiClient.post("/patient/" + id, user);
   },
 };

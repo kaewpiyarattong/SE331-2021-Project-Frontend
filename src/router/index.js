@@ -14,6 +14,7 @@ import Register from "@/views/RegistrationForm.vue";
 import AddRole from "@/views/UserLayout/AddRole.vue";
 import GStore from "@/store";
 import AuthorityService from "../service/AuthorityService";
+import PatientService from "@/service/PatientService.js";
 
 const routes = [
   {
@@ -59,6 +60,7 @@ const routes = [
     name: "AvailableVaccine",
     component: AvailableVaccine,
     beforeEnter: () => {
+      GStore.vaccines = null;
       return VaccineService.getVaccines()
         .then((res) => {
           GStore.vaccines = res.data;
@@ -94,7 +96,7 @@ const routes = [
             return { name: "NetworkError" };
           }
         });
-      VaccineService.getVaccines()
+      VaccineService.getVaccinesForAdd()
         .then((res) => (GStore.vaccines = res.data))
         .catch((err) => {
           if (err.response && err.response.status == 404) {
@@ -106,22 +108,39 @@ const routes = [
             return { name: "NetworkError" };
           }
         });
-
-      UserService.getUser(to.params.id)
-        .then((res) => {
-          GStore.user = res.data;
-        })
-        .catch((err) => {
-          if (err.response && err.response.status == 404) {
-            return {
-              name: "NotFound",
-              params: { resource: "user" },
-            };
-          } else {
-            return { name: "NetworkError" };
-          }
-        });
-    },
+        if(GStore.currentUser.authorities[0].name == "ROLE_ADMIN"){
+          UserService.getUser(to.params.id)
+          .then((res) => {
+            GStore.user = res.data;
+          })
+          .catch((err) => {
+            if (err.response && err.response.status == 404) {
+              return {
+                name: "NotFound",
+                params: { resource: "user" },
+              };
+            } else {
+              return { name: "NetworkError" };
+            }
+          });
+        }else{
+          PatientService.getPatient(to.params.id)
+          .then((res) => {
+            GStore.user = res.data.user;
+            console.log(GStore.user)
+          })
+          .catch((err) => {
+            if (err.response && err.response.status == 404) {
+              return {
+                name: "NotFound",
+                params: { resource: "user" },
+              };
+            } else {
+              return { name: "NetworkError" };
+            }
+          });
+        }
+      },
 
     children: [
       {
