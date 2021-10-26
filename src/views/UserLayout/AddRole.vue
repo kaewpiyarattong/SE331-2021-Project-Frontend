@@ -85,13 +85,16 @@
                 </label>
               </div>
               <!-- Add Doctor -->
-              <div class="form-group" v-if="showVaccine">
-                <select
-                  class="form-control"
-                  
-                >
+              <div class="form-group" v-if="showVaccine ">
+                <select class="form-control" v-model="doctor" required>
                   <option value="">Add Doctor</option>
-                  <option selected disabled hidden value="">Add Doctor</option>
+                  <option
+                    v-for="doctor in GStore.doctors"
+                    :key="doctor.id"
+                    :value="doctor"
+                  >
+                    {{ doctor.user.firstname }}
+                  </option>
                 </select>
               </div>
 
@@ -121,7 +124,7 @@ export default {
       fDate: "",
       sDate: "",
       role: "",
-      //addDoctor=""
+      doctor: "",
     };
   },
   inject: ["GStore"],
@@ -140,7 +143,12 @@ export default {
     updateUser() {
       let myTarget = this.GStore.user;
       myTarget.authorities = [this.role];
-      console.log(this.role.name);
+      
+      if(this.doctor != ""){
+        let obj = {};   
+        obj = this.doctor;
+        myTarget.doctor = obj;
+      }
       if (this.firstDose != "" && this.fDate != "") {
         myTarget.vaccination[0] = this.firstDose;
         myTarget.injectedAt[0] = this.fDate;
@@ -152,7 +160,7 @@ export default {
 
       this.newData = myTarget;
       UserService.updateUser(this.GStore.user.id, this.newData);
-      this.$router.go();
+      // this.$router.go();
     },
   },
 };

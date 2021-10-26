@@ -16,6 +16,7 @@ import AddRole from "@/views/UserLayout/AddRole.vue";
 import GStore from "@/store";
 import AuthorityService from "../service/AuthorityService";
 import PatientService from "@/service/PatientService.js";
+import DoctorService from "@/service/DoctorService.js";
 
 const routes = [
   {
@@ -85,6 +86,18 @@ const routes = [
     component: Layout,
     beforeEnter: (to) => {
       GStore.user = null;
+      DoctorService.getDoctorsForAdd()
+        .then((res) => (GStore.doctors = res.data))
+        .catch((err) => {
+          if (err.response && err.response.status == 404) {
+            return {
+              name: "NotFound",
+              params: { resource: "doctor" },
+            };
+          } else {
+            return { name: "NetworkError" };
+          }
+        });
       AuthorityService.getAuthorities()
         .then((res) => (GStore.authorities = res.data))
         .catch((err) => {
