@@ -1,9 +1,7 @@
 <template>
-  <div class="nav mt-4" v-if="GStore.user">
-    <div class="container link">
-      <div class="row justify-content-center ">
+  <div class="col-md-12 col-sm-12" v-if="GStore.user">
+    <div class="row justify-content-center">
 
-        <div class=" col-md-2 col-sm-12 setButton">
           <router-link
             :to="{ name: 'UserInformation' }"
             class="btn m-1"
@@ -11,20 +9,19 @@
           >
             Information
           </router-link>
-        </div>
+        
 
-        <div class="col-md-3 col-sm-12 setButton" v-if="GStore.user.authorities.length > 0">
+        <div v-if="this.GStore.user.authorities.length > 0">
           <router-link
             :to="{ name: 'VaccineDetail' }"
             class="btn m-1"
             id="button"
-            :v-if="GStore.user.authorities[0].id == 1"
+            :v-if="this.GStore.user.authorities[0].id == 1"
           >
             Vaccine's detail
           </router-link>
         </div>
 
-        <div class="col-md-3 col-sm-12 setButton">
           <router-link
             :to="{ name: 'AddRole' }"
             class="btn m-1"
@@ -33,19 +30,15 @@
           >
             Add Role & Vaccine
           </router-link>
-        </div>
         <!-- Delete Button -->
-        <div class="col-md-1 col-sm-12 setButton">
-          <a type="button" class="btn btn-danger btn m-1" @click="deleteUserById(GStore.user.id)">Delete</a>
+          <a type="button" id="deleteButton" class="btn btn-danger btn m-1" v-if="isAdmin" @click="deleteUserById(GStore.user.id)">Delete</a>
 
-        </div>
-      </div>
+    </div>
     </div>
 
     <div class="pcontent container">
       <router-view />
     </div>
-  </div>
 </template>
 <script>
 import AuthService from "@/service/AuthService.js";
