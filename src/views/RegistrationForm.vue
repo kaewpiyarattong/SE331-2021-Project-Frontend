@@ -271,7 +271,7 @@ label {
   border-radius: 10px;
   background-color: #9addd1;
   color: black;
-  margin: auto;
+  margin:50px auto 50px auto;
   padding-top: 20px;
 }
 </style>

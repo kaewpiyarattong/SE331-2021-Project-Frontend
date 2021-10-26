@@ -1,5 +1,5 @@
 <template>
-  <div class="nav mt-4">
+  <div class="nav mt-4" v-if="GStore.user">
     <div class="link container justify-content-between">
       <router-link
         :to="{ name: 'UserInformation' }"
@@ -8,7 +8,7 @@
       >
         Information
       </router-link>
-      <router-link :to="{ name: 'VaccineDetail' }" class="btn m-1" id="button">
+      <router-link :to="{ name: 'VaccineDetail' }" class="btn m-1" id="button" v-if="GStore.user.authorities[0].id==1">
         Vaccine's detail
       </router-link>
       <router-link
@@ -25,6 +25,7 @@
         @click="deleteUserById(GStore.user.id)"
         class="btn m-1"
         id="deleteButton"
+        v-if="isAdmin"
       >
         Delete
       </router-link>

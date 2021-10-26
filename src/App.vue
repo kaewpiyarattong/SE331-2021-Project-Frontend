@@ -4,7 +4,7 @@
     style="background-color: #6ec2b8"
   >
     <div class="container">
-      <router-link :to="{ name: 'UserList' }" class="navbar-brand float-left">
+        <router-link :to="{ name: 'UserList' }" class="navbar-brand float-left" v-if="!isPatient">
         <img src="../src/assets/logo.png" style="width: 100px" />
       </router-link>
 
@@ -55,6 +55,9 @@ export default {
     },
     isAdmin() {
       return AuthService.hasRoles("ROLE_ADMIN");
+    },
+    isPatient() {
+      return AuthService.hasRoles("ROLE_PATIENT");
     },
   },
   methods: {

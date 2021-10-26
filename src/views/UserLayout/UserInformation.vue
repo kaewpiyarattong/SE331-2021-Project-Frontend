@@ -16,7 +16,7 @@
       />
     </div>
     <div class="col-md-5 col-sm-12 p-4 mt-3" id="content">
-      <h3>User's detail</h3>
+      <h3>Information</h3>
       <div class="container mt-5">
         <p>
           <strong id="title">Name:</strong>{{ GStore.user.firstname }}
@@ -31,13 +31,22 @@
         <p><strong id="title">Gender:</strong>{{ GStore.user.gender }}</p>
         <p><strong id="title">Age:</strong>{{ GStore.user.age }} years old</p>
         <p><strong id="title">Hometown:</strong>{{ GStore.user.hometown }}</p>
+        <div v-if="isAdmin">
+          <p><strong id="title" >Role:</strong>{{ GStore.user.authorities[0].name }}</p>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import AuthService from '@/service/AuthService.js'
 export default {
   inject: ["GStore"],
+    computed: {
+    isAdmin() {
+      return AuthService.hasRoles("ROLE_ADMIN");
+    },
+  },
 };
 </script>
 <style scoped>

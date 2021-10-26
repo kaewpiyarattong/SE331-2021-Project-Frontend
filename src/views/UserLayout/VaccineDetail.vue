@@ -43,10 +43,11 @@
         </div>
       </div>
     </div>
+    <div v-if="!isDoctor"></div>
     <div
       class="container col-md-9 col-sm-12"
       id="content"
-      v-if="GStore.user.vaccination.length"
+      v-else-if="GStore.user.vaccination.length"
     >
       <form @submit.prevent="addSuggest">
         <select v-model="selectDose" id="selectOption">
@@ -76,6 +77,7 @@
 </template>
 <script>
 import UserService from "@/service/UserService";
+import AuthService from "@/service/AuthService.js";
 
 export default {
   inject: ["GStore"],
@@ -100,6 +102,9 @@ export default {
     },
     combineSuggest() {
       return this.selectDose + this.suggestion;
+    },
+    isDoctor() {
+      return AuthService.hasRoles("ROLE_DOCTOR");
     },
   },
 };
