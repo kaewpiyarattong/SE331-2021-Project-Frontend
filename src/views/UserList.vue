@@ -160,7 +160,12 @@ export default {
         }
       } else if (this.isDoctor) {
         if (this.search != "") {
-           PatientService.getPatientsName(this.page, this.limit, this.search, " ")
+          PatientService.getPatientsName(
+            this.page,
+            this.limit,
+            this.search,
+            " "
+          )
             .then((res) => {
               this.users = res.data;
               this.totalUsers = res.headers["x-total-count"];
@@ -168,9 +173,13 @@ export default {
             .catch((e) => {
               console.log(e);
             });
-        
-        } else if (this.gender != ""){
-           PatientService.getPatientsName(this.page, this.limit, " ", this.gender)
+        } else if (this.gender != "") {
+          PatientService.getPatientsName(
+            this.page,
+            this.limit,
+            " ",
+            this.gender
+          )
             .then((res) => {
               this.users = res.data;
               this.totalUsers = res.headers["x-total-count"];
@@ -178,10 +187,8 @@ export default {
             .catch((e) => {
               console.log(e);
             });
-
-        }
-        else{
-           PatientService.getPatients(this.page, this.limit)
+        } else {
+          PatientService.getPatients(this.page, this.limit)
             .then((res) => {
               this.users = res.data;
               this.totalUsers = res.headers["x-total-count"];

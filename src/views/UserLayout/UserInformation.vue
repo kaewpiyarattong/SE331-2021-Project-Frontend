@@ -32,17 +32,20 @@
         <p><strong id="title">Age:</strong>{{ GStore.user.age }} years old</p>
         <p><strong id="title">Hometown:</strong>{{ GStore.user.hometown }}</p>
         <div v-if="isAdmin">
-          <p><strong id="title" >Role:</strong>{{ GStore.user.authorities[0].name }}</p>
+          <p v-if="GStore.user.authorities.length > 0">
+            <strong id="title">Role:</strong
+            >{{ GStore.user.authorities[0].name }}
+          </p>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import AuthService from '@/service/AuthService.js'
+import AuthService from "@/service/AuthService.js";
 export default {
   inject: ["GStore"],
-    computed: {
+  computed: {
     isAdmin() {
       return AuthService.hasRoles("ROLE_ADMIN");
     },

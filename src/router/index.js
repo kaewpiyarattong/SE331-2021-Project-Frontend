@@ -25,8 +25,8 @@ const routes = [
       limit: parseInt(route.query.limit) || 9,
     }),
     meta: {
-      requiresAuth: true
-    }
+      requiresAuth: true,
+    },
   },
   {
     path: "/404/:resource",
@@ -153,16 +153,16 @@ const router = createRouter({
   },
 });
 router.beforeEach((to, from, next) => {
-  if (to.matched.some(record => record.meta.requiresAuth)) {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
-    if (localStorage.getItem("user")==null) {
-      next({ name: 'Login' })
+    if (localStorage.getItem("user") == null) {
+      next({ name: "Login" });
     } else {
-      next() // go to wherever I'm going
+      next(); // go to wherever I'm going
     }
   } else {
-    next() // does not require auth, make sure to always call next()!
+    next(); // does not require auth, make sure to always call next()!
   }
   Nprogress.start();
 });
