@@ -31,7 +31,7 @@
     </div>
 
     <div class="pcontent container">
-      <router-view  />    
+      <router-view />
     </div>
   </div>
 </template>

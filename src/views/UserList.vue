@@ -43,31 +43,17 @@
             <!-- Filter gender -->
             <div class="form-group">
               <h5>Filter gender</h5>
-              <select
-                class="form-control"
-                id="gender"
-                v-model="gender"
-              >
+              <select class="form-control" id="gender" v-model="gender">
                 <option value="">Any</option>
                 <option value="MALE">Male</option>
                 <option value="FEMALE">Female</option>
                 <option value="OTHERS">Others</option>
               </select>
             </div>
-
-            <!-- Filter age -->
-            <div class="form-group">
-              <h5>Filter by age range:</h5>
-              <span v-if="age != 75"> 5 </span>
-              <input type="range" v-model="age" min="10" max="75" step="5" />
-              <span>{{ age }}</span>
-              <span v-if="age == 75">+ </span>
-            </div>
-
             <!-- Filter Role -->
-            <div class="form-group">
+            <div class="form-group" v-if="isAdmin">
               <h5>Filter role</h5>
-              <select class="form-control" id="role" >
+              <select class="form-control" id="role">
                 <option value="">Any</option>
                 <option value="ROLE_ADMIN">Admin</option>
                 <option value="ROLE_DOCTOR">Docter</option>
@@ -85,11 +71,7 @@
         </div>
       </div>
       <div class="col-md-8 col-sm-12 p-3 mt-3 ml-md-4" id="content">
-        <p
-          v-if="search!=null"
-        >
-          All users: {{ totalUsers }}
-        </p>
+        <p v-if="search != null">All users: {{ totalUsers }}</p>
         <p v-else>Filter found: {{ totalUsers }}</p>
 
         <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -97,7 +79,7 @@
         </div>
         <nav
           class="navbar mt-10 justify-content-center"
-          v-if="filterPatientList != 0"
+          v-if="totalUsers != 0"
         >
           <ul class="pagination justify-content-center">
             <li class="page-item">
@@ -136,16 +118,16 @@ import PatientService from "@/service/PatientService.js";
 export default {
   name: "UserList",
   components: {
-  Card,
+    Card,
   },
   data() {
     return {
       filterShow: false,
       users: null,
       search: "",
-      gender:"",
+      gender: "",
       age: 75,
-      totalUsers: null,      
+      totalUsers: null,
     };
   },
   props: {
@@ -160,31 +142,59 @@ export default {
   },
   async created() {
     await watchEffect(() => {
-      if (
-        JSON.parse(localStorage.getItem("user")).authorities[0].name ==
-        "ROLE_ADMIN"
-      ) {
-        if(this.search!= null){
-          UserService.getUsersName(this.search, this.gender, this.page, this.limit)
-          .then((res) => {
-            this.users = res.data;
-            this.totalUsers = res.headers["x-total-count"];
-          })
-          .catch((e) => {
-            console.log(e);
-          });
-        }else{
-          UserService.getUsers(this.page, this.limit)
-          .then((res) => {
-            this.users = res.data;
-            this.totalUsers = res.headers["x-total-count"];
-          })
-          .catch((e) => {
-            console.log(e);
-          });
+      if (this.isAdmin) {
+        if(this.gender != ""){
+          UserService.getUsersName(
+              " ",
+              this.gender,
+              this.page,
+              this.limit
+            )
+              .then((res) => {
+                this.users = res.data;
+                this.totalUsers = res.headers["x-total-count"];
+              })
+              .catch((e) => {
+                console.log(e);
+              });
+
         }
 
-       
+        else if (this.search != "") {
+          if (this.gender != "") {
+            UserService.getUsersName(
+              this.search,
+              this.gender,
+              this.page,
+              this.limit
+            )
+              .then((res) => {
+                this.users = res.data;
+                this.totalUsers = res.headers["x-total-count"];
+              })
+              .catch((e) => {
+                console.log(e);
+              });
+          } else {
+            UserService.getUsersName(this.search, " ", this.page, this.limit)
+              .then((res) => {
+                this.users = res.data;
+                this.totalUsers = res.headers["x-total-count"];
+              })
+              .catch((e) => {
+                console.log(e);
+              });
+          }
+        } else {          
+            UserService.getUsersName(this.search, this.gender, this.page, this.limit)
+            .then((res) => {
+              this.users = res.data;
+              this.totalUsers = res.headers["x-total-count"];
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        }
       } else {
         PatientService.getPatients(this.page, this.limit)
           .then((res) => {
@@ -200,72 +210,17 @@ export default {
 
   methods: {
     clearFilter() {
-     
       this.search = "";
-      this.age = 75;
-      this.$swal.fire(
-        "Clear succesfully!",
-        "You have cleared up the filter",
-        "success"
-      );
+      this.gender = ""
       this.window.scroll(0, 0);
     },
-    // filterByName(patients) {
-    //   return patients.filter((patient) => {
-    //     return patient.firstname
-    //       .toLowerCase()
-    //       .includes(this.search.toLowerCase());
-    //   });
-    // },
-    // filterByFBrand(patients) {
-    //   return patients.filter((patient) => {
-    //     return patient.vaccination.firstdose.brand == this.selected.fbrand;
-    //   });
-    // },
-    // filterBySBrand(patients) {
-    //   return patients.filter((patient) => {
-    //     return patient.vaccination.seconddose != null
-    //       ? patient.vaccination.seconddose.brand == this.selected.sbrand
-    //       : null;
-    //   });
-    // },
-    // filterByGender(patients) {
-    //   return patients.filter((patient) => {
-    //     return patient.gender == this.selected.gender;
-    //   });
-    // },
-    // filterByAgeRange(patients) {
-    //   return patients.filter((patient) => {
-    //     return this.age < 75 ? patient.age <= this.age : patient.age >= 5;
-    //   });
-    // },
-    // filterByRole() {},
+   
   },
   computed: {
-      hasNextPage() {
-        let totalPage = Math.ceil(this.totalUsers / this.limit);
-        return this.page < totalPage;
-      },
-    //   filterPatientList() {
-    //     let npatients = this.patients;
-    //     if (this.search != "") {
-    //       npatients = this.filterByName(npatients);
-    //     }
-    //     if (this.selected.fbrand != "Any") {
-    //       npatients = this.filterByFBrand(npatients);
-    //     }
-    //     if (this.selected.sbrand != "Any") {
-    //       npatients = this.filterBySBrand(npatients);
-    //     }
-    //     if (this.selected.gender != "Any") {
-    //       npatients = this.filterByGender(npatients);
-    //     }
-    //     if (this.age < 75) {
-    //       npatients = this.filterByAgeRange(npatients);
-    //     }
-    //     // filterByRole
-    //     return npatients;
-    //   },
+    hasNextPage() {
+      let totalPage = Math.ceil(this.totalUsers / this.limit);
+      return this.page < totalPage;
+    },
     isAdmin() {
       return AuthService.hasRoles("ROLE_ADMIN");
     },

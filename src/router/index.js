@@ -78,6 +78,7 @@ const routes = [
     props: true,
     component: Layout,
     beforeEnter: (to) => {
+      GStore.user = null;
       AuthorityService.getAuthorities()
         .then((res) => (GStore.authorities = res.data))
         .catch((err) => {
@@ -104,7 +105,9 @@ const routes = [
         });
 
       UserService.getUser(to.params.id)
-        .then((res) => (GStore.user = res.data))
+        .then((res) => {
+          GStore.user = res.data;
+        })
         .catch((err) => {
           if (err.response && err.response.status == 404) {
             return {
