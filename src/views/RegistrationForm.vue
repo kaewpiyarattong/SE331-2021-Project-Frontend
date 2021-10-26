@@ -193,13 +193,8 @@ export default {
         .required("Password is required!")
         .min(6, "Must be at least 6 characters!")
         .max(40, "Must be maximum 40 characters!"),
-      age: yup
-        .number()
-        .typeError('Number Only')
-        .required("Age is required!"),
-      gender: yup
-        .string()
-        .required("Gender is required!"),
+      age: yup.number().typeError("Number Only").required("Age is required!"),
+      gender: yup.string().required("Gender is required!"),
     });
     return {
       successful: false,

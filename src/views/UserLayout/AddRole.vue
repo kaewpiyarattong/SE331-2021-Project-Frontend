@@ -27,9 +27,7 @@
                   v-model="firstDose"
                   @change="showFDate"
                 >
-                  <option value="">
-                    Add 1st vaccine
-                  </option>
+                  <option value="">Add 1st vaccine</option>
                   <option
                     v-for="vaccine in GStore.vaccines"
                     :key="vaccine.id"
@@ -131,8 +129,7 @@ export default {
       console.log(this.newData);
 
       UserService.updateUser(this.GStore.user.id, this.newData);
-      this.$router.go()
-      
+      this.$router.go();
     },
   },
 };
