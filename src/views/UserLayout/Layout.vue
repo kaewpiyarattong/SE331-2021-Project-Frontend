@@ -8,7 +8,7 @@
       >
         Information
       </router-link>
-      <router-link :to="{ name: 'VaccineDetail' }" class="btn m-1" id="button" v-if="GStore.user.authorities[0].id==1">
+      <router-link :to="{ name: 'VaccineDetail' }" class="btn m-1"  id="button">
         Vaccine's detail
       </router-link>
       <router-link
@@ -40,17 +40,13 @@
 import AuthService from "@/service/AuthService.js";
 import UserService from "@/service/UserService.js";
 
+
 export default {
   inject: ["GStore"],
   computed: {
     isAdmin() {
       return AuthService.hasRoles("ROLE_ADMIN");
     },
-    // hideVaccineDetail(){
-    //   if(Gstore. != "ROLE_PATIENT"){
-    //     return true;
-    //   }
-    // }
   },
   methods: {
     deleteUserById(id) {

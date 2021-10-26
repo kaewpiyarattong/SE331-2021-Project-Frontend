@@ -1,14 +1,14 @@
 <template>
   <div class="row justify-content-center mt-md-4 mt-sm-4" v-if="GStore.user">
+    <div class="container col-md-12 col-sm-12" v-if="this.GStore.user.vaccination.length!==0">
     <div
       class="container col-md-9 col-sm-12"
       id="content"
       v-for="(vaccine, index) in GStore.user.vaccination"
       :key="index"
+     
     >
-      <div class="row justify-content-center">
-        <!-- {{vaccine}} -->
-        <!-- 1st Dose -->
+      <div class="row justify-content-center" >
         <div class="container col-md-4 col-sm-12">
           <img
             class="img"
@@ -43,13 +43,18 @@
         </div>
       </div>
     </div>
-    <div v-if="!isDoctor"></div>
+    </div>
+
+    <div v-else class="container col-md-9 col-sm-12" style="color: red">
+      <h2>Have not add vaccine yet</h2>
+    </div>
+
     <div
       class="container col-md-9 col-sm-12"
       id="content"
-      v-else-if="GStore.user.vaccination.length"
+      v-if="isDoctor"
     >
-      <form @submit.prevent="addSuggest">
+      <form @submit.prevent="addSuggest" >
         <select v-model="selectDose" id="selectOption">
           <option value="">--Select Dose--</option>
           <option
@@ -68,10 +73,6 @@
         <input id="input" type="text" v-model="suggestion" v-if="!showInput" />
         <button id="button" class="btn btn-primary btn-block">Submit</button>
       </form>
-    </div>
-
-    <div class="container col-md-9 col-sm-12" v-else style="color: red">
-      <h2>Have not add vaccine yet</h2>
     </div>
   </div>
 </template>
@@ -95,6 +96,11 @@ export default {
       this.newData = myTarget;
       UserService.postSuggestion(this.GStore.user.id, this.newData);
     },
+    // hideVaccine(){
+    //   if(this.GStore.user.vaccination.length == 0){
+    //     return true
+    //   }
+    // }
   },
   computed: {
     showInput() {
@@ -107,6 +113,7 @@ export default {
       return AuthService.hasRoles("ROLE_DOCTOR");
     },
   },
+ 
 };
 </script>
 

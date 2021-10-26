@@ -13,7 +13,7 @@
                   v-model="role"
                   @change="showVaccine"
                 >
-                  <option selected disabled hidden value="">Select Role</option>
+                  <option value="">Select Role</option>
                   <option
                     v-for="role in GStore.authorities"
                     :key="role.id"
@@ -33,7 +33,7 @@
                   v-model="firstDose"
                   @change="showFDate"
                 >
-                  <option selected disabled hidden value="">
+                  <option value="">
                     Add 1st vaccine
                   </option>
                   <option

@@ -31,9 +31,9 @@
         <p><strong id="title">Gender:</strong>{{ GStore.user.gender }}</p>
         <p><strong id="title">Age:</strong>{{ GStore.user.age }} years old</p>
         <p><strong id="title">Hometown:</strong>{{ GStore.user.hometown }}</p>
-        <div v-if="isAdmin">
+        <!-- <div v-if="isAdmin">
           <p><strong id="title" >Role:</strong>{{ GStore.user.authorities[0].name }}</p>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
