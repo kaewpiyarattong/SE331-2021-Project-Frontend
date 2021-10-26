@@ -9,7 +9,18 @@
               <!-- Add Role-->
               <div class="form-group">
                 <select class="form-control" v-model="role" required>
-                  <option selected disabled hidden value="">Select Role</option>
+                  <option
+                    v-if="(this.GStore.user.authorities[0].id = null)"
+                    selected
+                    disabled
+                    hidden
+                    value=""
+                  >
+                    Select Role
+                  </option>
+                  <option v-else selected disabled hidden :value="role">
+                    {{ this.GStore.user.authorities[0].name }}
+                  </option>
                   <option
                     v-for="role in GStore.authorities"
                     :key="role.id"
@@ -20,8 +31,22 @@
                 </select>
               </div>
 
-              <!-- Add 1st vaccine -->
+              <!-- Add Doctor -->
               <div class="form-group" v-if="showVaccine">
+                <select class="form-control" v-model="doctor" required>
+                  <option value="">Add Doctor</option>
+                  <option
+                    v-for="doctor in GStore.doctors"
+                    :key="doctor.id"
+                    :value="doctor"
+                  >
+                    {{ doctor.user.firstname }}
+                  </option>
+                </select>
+              </div>
+
+              <!-- Add 1st vaccine -->
+              <div class="form-group" v-if="showVaccine && !showDoctor">
                 <select
                   class="form-control"
                   v-model="firstDose"
@@ -53,7 +78,7 @@
               </div>
 
               <!-- Add 2nd vaccine -->
-              <div class="form-group" v-if="!showFDate && showVaccine">
+              <div class="form-group" v-if="!test && showVaccine">
                 <select
                   class="form-control"
                   v-model="secondDose"
@@ -84,20 +109,6 @@
                   />
                 </label>
               </div>
-              <!-- Add Doctor -->
-              <div class="form-group" v-if="showVaccine ">
-                <select class="form-control" v-model="doctor" required>
-                  <option value="">Add Doctor</option>
-                  <option
-                    v-for="doctor in GStore.doctors"
-                    :key="doctor.id"
-                    :value="doctor"
-                  >
-                    {{ doctor.user.firstname }}
-                  </option>
-                </select>
-              </div>
-
               <!-- button Submit -->
               <div class="form-group">
                 <button id="button" class="btn btn-primary btn-block">
@@ -138,14 +149,20 @@ export default {
     showVaccine() {
       return this.role.name == "ROLE_PATIENT";
     },
+    showDoctor() {
+      return this.doctor == "";
+    },
+    test() {
+      return this.fDate == "";
+    },
   },
   methods: {
     updateUser() {
       let myTarget = this.GStore.user;
       myTarget.authorities = [this.role];
-      
-      if(this.doctor != ""){
-        let obj = {};   
+
+      if (this.doctor != "") {
+        let obj = {};
         obj = this.doctor;
         myTarget.doctor = obj;
       }
@@ -160,7 +177,7 @@ export default {
 
       this.newData = myTarget;
       UserService.updateUser(this.GStore.user.id, this.newData);
-      // this.$router.go();
+      this.$router.go();
     },
   },
 };

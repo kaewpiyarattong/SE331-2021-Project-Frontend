@@ -165,12 +165,10 @@ export default {
 #selectOption {
   margin-right: 30px;
   border-radius: 3px;
-  background-color: #54d3c2;
 }
 #input {
   border-radius: 3px;
   width: 320px;
-  background-color: #b7e9e0;
 }
 
 </style>

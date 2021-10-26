@@ -33,11 +33,11 @@
           <p><strong id="title">Gender:</strong>{{ GStore.user.gender }}</p>
           <p><strong id="title">Age:</strong>{{ GStore.user.age }} years old</p>
           <p><strong id="title">Hometown:</strong>{{ GStore.user.hometown }}</p>
-          <!-- <p>
+          <p>
             <strong id="title">Doctor:</strong>
             {{ GStore.user.doctor.user.firstname }}
             {{ GStore.user.doctor.user.lastname }}
-          </p> -->
+          </p>
         </div>
       </div>
     </div>
@@ -114,6 +114,6 @@ export default {
 }
 #img{
   height: 300px; 
-  margin-top:100px;
+  margin-top:35px;
 }
 </style>
