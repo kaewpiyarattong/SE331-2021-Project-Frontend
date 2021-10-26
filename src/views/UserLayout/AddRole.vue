@@ -84,6 +84,16 @@
                   />
                 </label>
               </div>
+              <!-- Add Doctor -->
+              <div class="form-group" v-if="showVaccine">
+                <select
+                  class="form-control"
+                  
+                >
+                  <option value="">Add Doctor</option>
+                  <option selected disabled hidden value="">Add Doctor</option>
+                </select>
+              </div>
 
               <!-- button Submit -->
               <div class="form-group">
@@ -111,6 +121,7 @@ export default {
       fDate: "",
       sDate: "",
       role: "",
+      //addDoctor=""
     };
   },
   inject: ["GStore"],

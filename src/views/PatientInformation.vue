@@ -7,18 +7,19 @@
           class="img-thumbnail"
           v-if="GStore.user.imageUrl.length"
           :src="GStore.user.imageUrl"
-          style="height: 300px"
+          id="img"
         />
         <img
           class="img-thumbnail"
           src="https://i.pinimg.com/474x/04/f0/42/04f0421b45476cc63c3266a70a9de1b7--worlds-largest-mondo.jpg"
           style="height: 300px"
+          id="img"
           v-else
         />
       </div>
-      <div class="col-md-5 col-sm-12 p-4 mt-3" id="content">
+      <div class="col-md-7 col-sm-12 p-4 mt-3" id="content">
         <h3>Information</h3>
-        <div class="container mt-5">
+        <div class="container mt-12">
           <p>
             <strong id="title">Name:</strong>{{ GStore.user.firstname }}
             {{ GStore.user.lastname }}
@@ -32,12 +33,11 @@
           <p><strong id="title">Gender:</strong>{{ GStore.user.gender }}</p>
           <p><strong id="title">Age:</strong>{{ GStore.user.age }} years old</p>
           <p><strong id="title">Hometown:</strong>{{ GStore.user.hometown }}</p>
-          <div v-if="isAdmin">
-            <p v-if="GStore.user.authorities.length > 0">
-              <strong id="title">Role:</strong
-              >{{ GStore.user.authorities[0].name }}
-            </p>
-          </div>
+          <!-- <p>
+            <strong id="title">Doctor:</strong>
+            {{ GStore.user.doctor.user.firstname }}
+            {{ GStore.user.doctor.user.lastname }}
+          </p> -->
         </div>
       </div>
     </div>
@@ -111,5 +111,9 @@ export default {
   margin-right: 5px;
   border-radius: 2px;
   padding-left: 5px;
+}
+#img{
+  height: 300px; 
+  margin-top:100px;
 }
 </style>
