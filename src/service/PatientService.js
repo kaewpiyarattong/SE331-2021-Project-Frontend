@@ -7,6 +7,19 @@ export default {
   getPatients(page, limit) {
     return apiClient.get("/patients" + "?_page=" + page + "&_limit=" + limit);
   },
+  getPatientsName(page, limit, name, gender) {
+    return apiClient.get(
+      "/patients" +
+        "?_page=" +
+        page +
+        "&_limit=" +
+        limit +
+        "&name=" +
+        name +
+        "&gender=" +
+        gender
+    );
+  },
   getPatient(id) {
     return apiClient.get("/patient/" + id);
   },

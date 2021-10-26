@@ -30,7 +30,7 @@
         <div :class="{ collapse: !filterShow }">
           <form>
             <!-- Filter name -->
-            <div class="form-group">
+            <div class="form-group" v-if="gender == ''">
               <h5>Search by name or username:</h5>
               <input
                 class="form-control"
@@ -41,7 +41,7 @@
             </div>
 
             <!-- Filter gender -->
-            <div class="form-group">
+            <div class="form-group" v-if="search == ''">
               <h5>Filter gender</h5>
               <select class="form-control" id="gender" v-model="gender">
                 <option value="">Any</option>
@@ -51,16 +51,6 @@
               </select>
             </div>
             <!-- Filter Role -->
-            <div class="form-group" v-if="isAdmin">
-              <h5>Filter role</h5>
-              <select class="form-control" id="role">
-                <option value="">Any</option>
-                <option value="ROLE_ADMIN">Admin</option>
-                <option value="ROLE_DOCTOR">Docter</option>
-                <option value="ROLE_PATIENT">Patient</option>
-                <option>No role</option>
-              </select>
-            </div>
           </form>
           <button
             class="btn btn-outline-danger rounded btn-sm mt-2"
@@ -77,10 +67,7 @@
         <div class="row row-cols-1 row-cols-md-3 g-4">
           <Card v-for="user in users" :user="user" :key="user.id"></Card>
         </div>
-        <nav
-          class="navbar mt-10 justify-content-center"
-          v-if="totalUsers != 0"
-        >
+        <nav class="navbar mt-10 justify-content-center" v-if="totalUsers != 0">
           <ul class="pagination justify-content-center">
             <li class="page-item">
               <router-link
@@ -143,50 +130,26 @@ export default {
   async created() {
     await watchEffect(() => {
       if (this.isAdmin) {
-        if(this.gender != ""){
-          UserService.getUsersName(
-              " ",
-              this.gender,
-              this.page,
-              this.limit
-            )
-              .then((res) => {
-                this.users = res.data;
-                this.totalUsers = res.headers["x-total-count"];
-              })
-              .catch((e) => {
-                console.log(e);
-              });
-
-        }
-
-        else if (this.search != "") {
-          if (this.gender != "") {
-            UserService.getUsersName(
-              this.search,
-              this.gender,
-              this.page,
-              this.limit
-            )
-              .then((res) => {
-                this.users = res.data;
-                this.totalUsers = res.headers["x-total-count"];
-              })
-              .catch((e) => {
-                console.log(e);
-              });
-          } else {
-            UserService.getUsersName(this.search, " ", this.page, this.limit)
-              .then((res) => {
-                this.users = res.data;
-                this.totalUsers = res.headers["x-total-count"];
-              })
-              .catch((e) => {
-                console.log(e);
-              });
-          }
-        } else {          
-            UserService.getUsersName(this.search, this.gender, this.page, this.limit)
+        if (this.search != "") {
+          UserService.getUsersName(this.page, this.limit, this.search, " ")
+            .then((res) => {
+              this.users = res.data;
+              this.totalUsers = res.headers["x-total-count"];
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        } else if (this.gender != "")
+          UserService.getUsersName(this.page, this.limit, " ", this.gender)
+            .then((res) => {
+              this.users = res.data;
+              this.totalUsers = res.headers["x-total-count"];
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        else {
+          UserService.getUsers(this.page, this.limit)
             .then((res) => {
               this.users = res.data;
               this.totalUsers = res.headers["x-total-count"];
@@ -195,15 +158,38 @@ export default {
               console.log(e);
             });
         }
-      } else {
-        PatientService.getPatients(this.page, this.limit)
-          .then((res) => {
-            this.users = res.data;
-            this.totalUsers = res.headers["x-total-count"];
-          })
-          .catch((e) => {
-            console.log(e);
-          });
+      } else if (this.isDoctor) {
+        if (this.search != "") {
+           PatientService.getPatientsName(this.page, this.limit, this.search, " ")
+            .then((res) => {
+              this.users = res.data;
+              this.totalUsers = res.headers["x-total-count"];
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        
+        } else if (this.gender != ""){
+           PatientService.getPatientsName(this.page, this.limit, " ", this.gender)
+            .then((res) => {
+              this.users = res.data;
+              this.totalUsers = res.headers["x-total-count"];
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+
+        }
+        else{
+           PatientService.getPatients(this.page, this.limit)
+            .then((res) => {
+              this.users = res.data;
+              this.totalUsers = res.headers["x-total-count"];
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        }
       }
     });
   },
@@ -211,10 +197,9 @@ export default {
   methods: {
     clearFilter() {
       this.search = "";
-      this.gender = ""
+      this.gender = "";
       this.window.scroll(0, 0);
     },
-   
   },
   computed: {
     hasNextPage() {

@@ -7,7 +7,7 @@ export default {
   getUsers(page, limit) {
     return apiClient.get("/users" + "?_page=" + page + "&_limit=" + limit);
   },
-  getUsersName(name, gender, page, limit) {
+  getUsersName(page, limit, name, gender) {
     return apiClient.get(
       "/users" +
         "?_page=" +
@@ -24,7 +24,7 @@ export default {
     return apiClient.get("/user/" + id);
   },
   postSuggestion(id, user) {
-    return apiClient.put("/patient/" + id, user);
+    return apiClient.put("/patient/" + id, user, { useCredentails: true });
   },
   deleteUserById(id) {
     return apiClient.delete("/user/" + id);
