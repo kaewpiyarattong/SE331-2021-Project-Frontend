@@ -8,6 +8,7 @@ import UserService from "@/service/UserService";
 import VaccineService from "@/service/VaccineService";
 import Nprogress from "nprogress";
 import NotFound from "@/views/NotFound.vue";
+import PatientInformation from "@/views/PatientInformation.vue";
 import NetworkError from "@/views/NetworkError.vue";
 import Login from "@/views/LoginForm.vue";
 import Register from "@/views/RegistrationForm.vue";
@@ -127,7 +128,6 @@ const routes = [
         PatientService.getPatient(to.params.id)
           .then((res) => {
             GStore.user = res.data.user;
-            console.log(GStore.user);
           })
           .catch((err) => {
             if (err.response && err.response.status == 404) {
@@ -162,6 +162,11 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/PatientInformation",
+    name: "PatientInformation",
+    component: PatientInformation,
+  },
 ];
 
 const router = createRouter({
@@ -172,11 +177,14 @@ const router = createRouter({
   },
 });
 router.beforeEach((to, from, next) => {
+  let user = JSON.parse(localStorage.getItem("user"));
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     // this route requires auth, check if logged in
     // if not, redirect to login page.
     if (localStorage.getItem("user") == null) {
       next({ name: "Login" });
+    } else if (user.authorities[0].name == "ROLE_PATIENT" && to.path == "/") {
+      next({ name: "PatientInformation", params: user.id });
     } else {
       next(); // go to wherever I'm going
     }

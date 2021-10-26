@@ -42,7 +42,13 @@
               <div class="form-group" v-if="!showFDate && showVaccine">
                 <label
                   >Date:
-                  <input type="date" id="fdate" name="fdate" v-model="fDate" required/>
+                  <input
+                    type="date"
+                    id="fdate"
+                    name="fdate"
+                    v-model="fDate"
+                    required
+                  />
                 </label>
               </div>
 
@@ -69,7 +75,13 @@
               <div class="form-group" v-if="!showSDose && showVaccine">
                 <label
                   >Date:
-                  <input type="date" id="sdate" name="sdate" v-model="sDate" required />
+                  <input
+                    type="date"
+                    id="sdate"
+                    name="sdate"
+                    v-model="sDate"
+                    required
+                  />
                 </label>
               </div>
 
@@ -117,7 +129,7 @@ export default {
     updateUser() {
       let myTarget = this.GStore.user;
       myTarget.authorities = [this.role];
-      console.log(this.role.name)
+      console.log(this.role.name);
       if (this.firstDose != "" && this.fDate != "") {
         myTarget.vaccination[0] = this.firstDose;
         myTarget.injectedAt[0] = this.fDate;
@@ -126,7 +138,6 @@ export default {
         myTarget.vaccination[1] = this.secondDose;
         myTarget.injectedAt[1] = this.sDate;
       }
-
 
       this.newData = myTarget;
       UserService.updateUser(this.GStore.user.id, this.newData);

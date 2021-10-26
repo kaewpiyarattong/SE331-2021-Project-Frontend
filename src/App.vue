@@ -4,10 +4,7 @@
     id="nav"
   >
     <div>
-      <router-link
-        :to="{ name: 'UserList' }"
-        class="navbar-brand float-left"
-      >
+      <router-link :to="{ name: 'UserList' }" class="navbar-brand float-left">
         <img src="../src/assets/logo.png" style="width: 100px" />
       </router-link>
     </div>
@@ -16,7 +13,6 @@
         <font-awesome-icon icon="user" />
         {{ GStore.currentUser.username }}
       </a>
-      
     </div>
 
     <button
@@ -72,7 +68,7 @@ export default {
     },
     isAdmin() {
       return AuthService.hasRoles("ROLE_ADMIN");
-    }
+    },
   },
   methods: {
     logout() {

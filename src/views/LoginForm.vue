@@ -90,8 +90,7 @@ export default {
   methods: {
     handleLogin(user) {
       AuthService.login(user)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           this.$router.push({ name: "UserList" });
         })
         .catch(() => {

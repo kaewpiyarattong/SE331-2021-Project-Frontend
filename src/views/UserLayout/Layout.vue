@@ -1,7 +1,6 @@
 <template>
-  <div class="col-md-12 col-sm-12" v-if="GStore.user" >
-    <div class="row justify-content-center" >
-
+  <div class="col-md-12 col-sm-12" v-if="GStore.user">
+    <div class="row justify-content-center">
       <router-link
         :to="{ name: 'UserInformation' }"
         class="btn m-1"
@@ -15,7 +14,7 @@
           :to="{ name: 'VaccineDetail' }"
           class="btn m-1"
           id="button"
-          v-if="this.GStore.user.vaccination.length!==0"
+          v-if="this.GStore.user.vaccination.length !== 0"
         >
           Vaccine's detail
         </router-link>
