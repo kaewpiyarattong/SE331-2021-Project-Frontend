@@ -24,6 +24,7 @@ export default {
     return apiClient.get("/user/" + id);
   },
   updateUser(id, user) {
+    console.log(user);
     return apiClient.post("/user/" + id, user);
   },
   deleteUserById(id) {

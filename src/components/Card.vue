@@ -1,10 +1,9 @@
 <template>
   <div class="col-md-4 mt-2">
-  
-    <router-link 
+    <router-link
       :to="{ name: 'UserInformation', params: { id: user.id } }"
       style="text-decoration: none"
-    >    
+    >
       <!-- Show information for Admin -->
       <div class="card" v-if="isAdmin">
         <!-- add patient's image -->

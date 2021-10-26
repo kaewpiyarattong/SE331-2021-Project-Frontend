@@ -41,6 +41,7 @@
             <ul v-if="index == 0">
               <li v-for="(s,i) in showSuggestF" :key="i" >{{s}}</li>
             </ul>
+            
             <ul v-if="index == 1">
               <li v-for="(s,i) in showSuggestS" :key="i" >{{s}}</li>
             </ul>

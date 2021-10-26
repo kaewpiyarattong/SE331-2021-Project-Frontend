@@ -8,7 +8,7 @@
             <div class="col-12 col-md-5 col-sm-12 pr">
               <!-- Add Role-->
               <div class="form-group">
-                <select class="form-control" v-model="role">
+                <select class="form-control" v-model="role" required>
                   <option selected disabled hidden value="">Select Role</option>
                   <option
                     v-for="role in GStore.authorities"
@@ -27,9 +27,7 @@
                   v-model="firstDose"
                   @change="showFDate"
                 >
-                  <option value="">
-                    Add 1st vaccine
-                  </option>
+                  <option value="">Add 1st vaccine</option>
                   <option
                     v-for="vaccine in GStore.vaccines"
                     :key="vaccine.id"
@@ -44,7 +42,7 @@
               <div class="form-group" v-if="!showFDate && showVaccine">
                 <label
                   >Date:
-                  <input type="date" id="fdate" name="fdate" v-model="fDate" />
+                  <input type="date" id="fdate" name="fdate" v-model="fDate" required/>
                 </label>
               </div>
 
@@ -67,12 +65,11 @@
                   </option>
                 </select>
               </div>
-              {{ sDate }}
               <!-- Add 2st date date -->
               <div class="form-group" v-if="!showSDose && showVaccine">
                 <label
                   >Date:
-                  <input type="date" id="sdate" name="sdate" v-model="sDate" />
+                  <input type="date" id="sdate" name="sdate" v-model="sDate" required />
                 </label>
               </div>
 
@@ -118,21 +115,22 @@ export default {
   },
   methods: {
     updateUser() {
-      let myTarget = JSON.parse(JSON.stringify(this.GStore.user));
+      let myTarget = this.GStore.user;
       myTarget.authorities = [this.role];
+      console.log(this.role.name)
+      if (this.firstDose != "" && this.fDate != "") {
+        myTarget.vaccination[0] = this.firstDose;
+        myTarget.injectedAt[0] = this.fDate;
+      }
+      if (this.secondDose != "" && this.sDate != "") {
+        myTarget.vaccination[1] = this.secondDose;
+        myTarget.injectedAt[1] = this.sDate;
+      }
 
-      myTarget.vaccination[0] = this.firstDose;
-      myTarget.vaccination[1] = this.secondDose;
-
-      myTarget.injectedAt[0] = this.fDate;
-      myTarget.injectedAt[1] = this.sDate;
 
       this.newData = myTarget;
-      console.log(this.newData);
-
       UserService.updateUser(this.GStore.user.id, this.newData);
-      this.$router.go()
-      
+      //      this.$router.go()
     },
   },
 };

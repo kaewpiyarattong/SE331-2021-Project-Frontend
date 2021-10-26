@@ -1,43 +1,50 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-light justify-content-between " id="nav">
-  <router-link
-        :to="{ name: 'UserList' }"
-        class="navbar-brand float-left"
-        v-if="!isPatient"
-      >
-        <img src="../src/assets/logo.png" style="width: 100px" />
-      </router-link>
-      <div v-if="GStore.currentUser">
-        <a style="color: #09606a">
-          <font-awesome-icon icon="user" />
-          {{ GStore.currentUser.username }}
-        </a>
-      </div>
+  <nav
+    class="navbar navbar-expand-lg navbar-light justify-content-between"
+    id="nav"
+  >
+    <router-link
+      :to="{ name: 'UserList' }"
+      class="navbar-brand float-left"
+      v-if="!isPatient"
+    >
+      <img src="../src/assets/logo.png" style="width: 100px" />
+    </router-link>
+    <div v-if="GStore.currentUser">
+      <a style="color: #09606a">
+        <font-awesome-icon icon="user" />
+        {{ GStore.currentUser.username }}
+      </a>
+    </div>
 
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item" >
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
           <router-link :to="{ name: 'AvailableVaccine' }" class="nav-link pr-3"
             >Available Vaccines</router-link
           >
         </li>
-      <li class="nav-item">
-            <a class="nav-link" @click="logout">
-              <font-awesome-icon icon="sign-out-alt" /> LogOut
-            </a>
-          </li>
+        <li class="nav-item">
+          <a class="nav-link" @click="logout">
+            <font-awesome-icon icon="sign-out-alt" /> LogOut
+          </a>
+        </li>
+      </ul>
+    </div>
 
-    </ul>
-  </div>
-
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-
-  </div>
-</nav> 
+    <div class="collapse navbar-collapse" id="navbarSupportedContent"></div>
+  </nav>
 
   <div class="container mt-3">
     <router-view />
@@ -87,7 +94,7 @@ export default {
 
 #nav {
   padding: 10px;
-  background-color: #6ec2b8
+  background-color: #6ec2b8;
 }
 
 #nav a {
@@ -111,6 +118,4 @@ export default {
   border-top-color: #09606a;
   border-left-color: #09606a;
 }
-
-
 </style>

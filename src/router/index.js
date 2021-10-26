@@ -108,8 +108,8 @@ const routes = [
             return { name: "NetworkError" };
           }
         });
-        if(GStore.currentUser.authorities[0].name == "ROLE_ADMIN"){
-          UserService.getUser(to.params.id)
+      if (GStore.currentUser.authorities[0].name == "ROLE_ADMIN") {
+        UserService.getUser(to.params.id)
           .then((res) => {
             GStore.user = res.data;
           })
@@ -123,11 +123,11 @@ const routes = [
               return { name: "NetworkError" };
             }
           });
-        }else{
-          PatientService.getPatient(to.params.id)
+      } else {
+        PatientService.getPatient(to.params.id)
           .then((res) => {
             GStore.user = res.data.user;
-            console.log(GStore.user)
+            console.log(GStore.user);
           })
           .catch((err) => {
             if (err.response && err.response.status == 404) {
@@ -139,8 +139,8 @@ const routes = [
               return { name: "NetworkError" };
             }
           });
-        }
-      },
+      }
+    },
 
     children: [
       {
