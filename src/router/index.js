@@ -166,6 +166,23 @@ const routes = [
     path: "/PatientInformation",
     name: "PatientInformation",
     component: PatientInformation,
+    beforeEnter: () => {
+      let user = JSON.parse(localStorage.getItem("user"));
+      UserService.getUser(user.id)
+        .then((res) => {
+          GStore.user = res.data;
+        })
+        .catch((err) => {
+          if (err.response && err.response.status == 404) {
+            return {
+              name: "NotFound",
+              params: { resource: "user" },
+            };
+          } else {
+            return { name: "NetworkError" };
+          }
+        });
+    },
   },
 ];
 

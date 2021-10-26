@@ -37,10 +37,9 @@
             >{{ GStore.user.authorities[0].name }}
           </p>
           <p v-if="GStore.user.doctor">
-            <strong id="title">Doctor:</strong>    
-              {{GStore.user.doctor.user.firstname}}
-              {{GStore.user.doctor.user.lastname}}
-
+            <strong id="title">Doctor:</strong>
+            {{ GStore.user.doctor.user.firstname }}
+            {{ GStore.user.doctor.user.lastname }}
           </p>
         </div>
       </div>

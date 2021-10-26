@@ -107,7 +107,7 @@ export default {
   components: {
     Card,
   },
-  inject:["GStore"],
+  inject: ["GStore"],
   data() {
     return {
       filterShow: false,
@@ -154,7 +154,7 @@ export default {
             .then((res) => {
               this.users = res.data;
               this.totalUsers = res.headers["x-total-count"];
-              console.log(this.users)
+              console.log(this.users);
             })
             .catch((e) => {
               console.log(e);
@@ -169,9 +169,12 @@ export default {
             " "
           )
             .then((res) => {
-              this.users = res.data.filter(user=>{
-                if(user.user.doctor!=null){
-                  return user.user.doctor.user.username == this.GStore.currentUser.username
+              this.users = res.data.filter((user) => {
+                if (user.user.doctor != null) {
+                  return (
+                    user.user.doctor.user.username ==
+                    this.GStore.currentUser.username
+                  );
                 }
               });
               this.totalUsers = this.users.length;
@@ -187,9 +190,12 @@ export default {
             this.gender
           )
             .then((res) => {
-              this.users = res.data.filter(user=>{
-                if(user.user.doctor!=null){
-                  return user.user.doctor.user.username == this.GStore.currentUser.username
+              this.users = res.data.filter((user) => {
+                if (user.user.doctor != null) {
+                  return (
+                    user.user.doctor.user.username ==
+                    this.GStore.currentUser.username
+                  );
                 }
               });
               this.totalUsers = this.users.length;
@@ -200,9 +206,12 @@ export default {
         } else {
           PatientService.getPatients(this.page, this.limit)
             .then((res) => {
-              this.users = res.data.filter(user=>{
-                if(user.user.doctor!=null){
-                  return user.user.doctor.user.username == this.GStore.currentUser.username
+              this.users = res.data.filter((user) => {
+                if (user.user.doctor != null) {
+                  return (
+                    user.user.doctor.user.username ==
+                    this.GStore.currentUser.username
+                  );
                 }
               });
               this.totalUsers = this.users.length;
