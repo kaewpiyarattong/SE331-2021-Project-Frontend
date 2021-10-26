@@ -11,14 +11,13 @@
       <div class="row justify-content-center" >
         <div class="container col-md-4 col-sm-12">
           <img
-            class="img"
             v-if="vaccine.imageUrls.length"
             :src="vaccine.imageUrls[0]"
             style="height: 150px"
           />
         </div>
         <div class="container col-md-7 col-sm-12">
-          <h4 id="title1">Dose {{ index + 1 }} detail</h4>
+          <h4>Dose {{ index + 1 }} detail</h4>
           <!-- add Vaccine Brand -->
           <p>
             <span class="font-weight-bold p-1 rounded mr-1" id="title"
@@ -52,7 +51,7 @@
     </div>
 
     <div v-else class="container col-md-9 col-sm-12" style="color: red">
-      <h2>Have not add vaccine yet</h2>
+      <h2>Have not vaccine informatiom yet</h2>
     </div>
 
     <div
@@ -145,9 +144,9 @@ export default {
 
 <style scoped>
 #content {
-  border: 1px solid #35393d;
-  border-radius: 6px;
-  background-color: #ffffff;
+  border: 1px solid #39bbc7;
+  border-radius: 10px;
+  background-color: #9addd1;
   padding-top: 20px;
   margin: 10px auto 10px auto;
 }
@@ -173,10 +172,5 @@ export default {
   width: 320px;
   background-color: #b7e9e0;
 }
-#title1 {
-  background-color: #70dbc4;
-  margin-right: 5px;
-  border-radius: 7px;
-  padding-left: 5px;
-}
+
 </style>

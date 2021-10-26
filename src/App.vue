@@ -3,18 +3,20 @@
     class="navbar navbar-expand-lg navbar-light justify-content-between"
     id="nav"
   >
-    <router-link
-      :to="{ name: 'UserList' }"
-      class="navbar-brand float-left"
-      v-if="!isPatient"
-    >
-      <img src="../src/assets/logo.png" style="width: 100px" />
-    </router-link>
-    <div v-if="GStore.currentUser">
+    <div>
+      <router-link
+        :to="{ name: 'UserList' }"
+        class="navbar-brand float-left"
+      >
+        <img src="../src/assets/logo.png" style="width: 100px" />
+      </router-link>
+    </div>
+    <div v-if="GStore.currentUser" class="topnav-centered">
       <a style="color: #09606a">
         <font-awesome-icon icon="user" />
         {{ GStore.currentUser.username }}
       </a>
+      
     </div>
 
     <button
@@ -28,15 +30,18 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
+    <div
+      class="collapse navbar-collapse collapse w-100 order-3 dual-collapse2"
+      id="navbarSupportedContent"
+    >
+      <ul class="navbar-nav ml-auto">
         <li class="nav-item">
           <router-link :to="{ name: 'AvailableVaccine' }" class="nav-link pr-3"
             >Available Vaccines</router-link
           >
         </li>
-        <li class="nav-item">
-          <a class="nav-link" @click="logout">
+        <li class="nav-item" v-if="GStore.currentUser">
+          <a class="nav-link" style="color: #09606a" @click="logout">
             <font-awesome-icon icon="sign-out-alt" /> LogOut
           </a>
         </li>
@@ -67,10 +72,7 @@ export default {
     },
     isAdmin() {
       return AuthService.hasRoles("ROLE_ADMIN");
-    },
-    isPatient() {
-      return AuthService.hasRoles("ROLE_PATIENT");
-    },
+    }
   },
   methods: {
     logout() {
@@ -95,15 +97,20 @@ export default {
 #nav {
   padding: 10px;
   background-color: #6ec2b8;
+  color: #188681;
 }
 
 #nav a {
   font-weight: bold;
-  color: #2c3e50;
+  color: #09606a;
 }
 
 #nav a.router-link-exact-active {
-  color: #42b983;
+  color: #087763;
+}
+#nav div :hover {
+  color: #02302d;
+  cursor: pointer;
 }
 
 #nprogress .bar {
@@ -117,5 +124,12 @@ export default {
 #nprogress .spinner .spinner-icon {
   border-top-color: #09606a;
   border-left-color: #09606a;
+}
+
+.topnav-centered a {
+  float: none;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 </style>

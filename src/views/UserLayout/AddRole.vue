@@ -130,7 +130,7 @@ export default {
 
       this.newData = myTarget;
       UserService.updateUser(this.GStore.user.id, this.newData);
-      //      this.$router.go()
+      this.$router.go();
     },
   },
 };

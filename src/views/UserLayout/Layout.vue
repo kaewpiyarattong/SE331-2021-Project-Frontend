@@ -1,6 +1,7 @@
 <template>
-  <div class="col-md-12 col-sm-12" v-if="GStore.user">
-    <div class="row justify-content-center">
+  <div class="col-md-12 col-sm-12" v-if="GStore.user" >
+    <div class="row justify-content-center" >
+
       <router-link
         :to="{ name: 'UserInformation' }"
         class="btn m-1"
@@ -9,12 +10,12 @@
         Information
       </router-link>
 
-      <div v-if="this.GStore.user.authorities.length > 0">
+      <div v-if="GStore.user.authorities.length > 0">
         <router-link
           :to="{ name: 'VaccineDetail' }"
           class="btn m-1"
           id="button"
-          :v-if="this.GStore.user.authorities[0].id == 1"
+          v-if="this.GStore.user.vaccination.length!==0"
         >
           Vaccine's detail
         </router-link>
