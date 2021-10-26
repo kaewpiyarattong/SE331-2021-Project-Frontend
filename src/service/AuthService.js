@@ -19,8 +19,6 @@ export default {
       });
   },
   register(user) {
-    console.log(user);
-
     return apiClient
       .post("/register", {
         username: user.username,

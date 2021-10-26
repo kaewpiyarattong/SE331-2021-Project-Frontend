@@ -20,14 +20,10 @@
         Add Role & Vaccine
       </router-link>
       <!-- Delete Button -->
-      <router-link
-        :to="{ name: 'UserList' }"
-        @click="deleteUserById(GStore.user.id)"
-        class="btn m-1"
-        id="deleteButton"
-      >
-        Delete
-      </router-link>
+        
+      <a type="button" class="btn btn-danger btn m-1" @click="deleteUserById(GStore.user.id)">Delete</a>
+
+    
     </div>
 
     <div class="pcontent container">
@@ -53,8 +49,9 @@ export default {
   },
   methods: {
     deleteUserById(id) {
+      // console.log(id)
       UserService.deleteUserById(id);
-      // return this.$router.go()
+      this.$router.push({name:"UserList"})
     },
   },
 };

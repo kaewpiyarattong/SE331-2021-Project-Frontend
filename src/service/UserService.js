@@ -23,10 +23,10 @@ export default {
   getUser(id) {
     return apiClient.get("/user/" + id);
   },
-  postSuggestion(id, user) {
-    return apiClient.put("/patient/" + id, user, { useCredentails: true });
+  updateUser(id, user) {
+    return apiClient.post("/user/" + id, user);
   },
   deleteUserById(id) {
-    return apiClient.delete("/user/" + id);
+    return apiClient.post("/user/" + id + "/delete");
   },
 };

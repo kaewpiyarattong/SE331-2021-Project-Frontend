@@ -2,29 +2,23 @@
   <div class="col-md-12">
     <div class="col-md-9 col-sm-12" id="content">
       <h3>Add Role & Vaccine</h3>
-      <Form @submit="saveRole" :validation-schema="schema">
+      <form @submit.prevent="updateUser" :validation-schema="schema">
         <div v-if="!successful">
           <div class="row justify-content-center">
             <div class="col-12 col-md-5 col-sm-12 pr">
               <!-- Add Role-->
               <div class="form-group">
-                <select
-                  class="form-control"
-                  v-model="role"
-                  @change="showVaccine"
-                >
+                <select class="form-control" v-model="role">
                   <option selected disabled hidden value="">Select Role</option>
                   <option
                     v-for="role in GStore.authorities"
                     :key="role.id"
-                    :value="role.name"
+                    :value="role"
                   >
                     {{ role.name }}
                   </option>
                 </select>
               </div>
-
-              <!-- {{Gstore.authorities}} -->
 
               <!-- Add 1st vaccine -->
               <div class="form-group" v-if="showVaccine">
@@ -39,7 +33,7 @@
                   <option
                     v-for="vaccine in GStore.vaccines"
                     :key="vaccine.id"
-                    :value="vaccine.brand"
+                    :value="vaccine"
                   >
                     {{ vaccine.brand }}
                   </option>
@@ -50,7 +44,7 @@
               <div class="form-group" v-if="!showFDate && showVaccine">
                 <label
                   >Date:
-                  <input type="date" id="fdate" name="fdate" />
+                  <input type="date" id="fdate" name="fdate" v-model="fDate" />
                 </label>
               </div>
 
@@ -67,18 +61,18 @@
                   <option
                     v-for="vaccine in GStore.vaccines"
                     :key="vaccine.id"
-                    :value="vaccine.brand"
+                    :value="vaccine"
                   >
                     {{ vaccine.brand }}
                   </option>
                 </select>
               </div>
-
+              {{ sDate }}
               <!-- Add 2st date date -->
               <div class="form-group" v-if="!showSDose && showVaccine">
                 <label
                   >Date:
-                  <input type="date" id="sdate" name="sdate" />
+                  <input type="date" id="sdate" name="sdate" v-model="sDate" />
                 </label>
               </div>
 
@@ -91,23 +85,22 @@
             </div>
           </div>
         </div>
-      </Form>
+      </form>
     </div>
   </div>
 </template>
 
 <script>
-import { Form } from "vee-validate";
+import UserService from "@/service/UserService";
 
 export default {
   name: "AddRole",
-  components: {
-    Form,
-  },
   data() {
     return {
       firstDose: "",
       secondDose: "",
+      fDate: "",
+      sDate: "",
       role: "",
     };
   },
@@ -120,7 +113,26 @@ export default {
       return this.secondDose == "";
     },
     showVaccine() {
-      return this.role == "ROLE_PATIENT";
+      return this.role.name == "ROLE_PATIENT";
+    },
+  },
+  methods: {
+    updateUser() {
+      let myTarget = JSON.parse(JSON.stringify(this.GStore.user));
+      myTarget.authorities = [this.role];
+
+      myTarget.vaccination[0] = this.firstDose;
+      myTarget.vaccination[1] = this.secondDose;
+
+      myTarget.injectedAt[0] = this.fDate;
+      myTarget.injectedAt[1] = this.sDate;
+
+      this.newData = myTarget;
+      console.log(this.newData);
+
+      UserService.updateUser(this.GStore.user.id, this.newData);
+      this.$router.go()
+      
     },
   },
 };
