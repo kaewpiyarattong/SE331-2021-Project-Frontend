@@ -1,0 +1,7 @@
+version: "3.9"
+services:
+    web:
+        image: "tulyakai/331-final-front:latest"
+        ports: 
+            - 8001:80
+    
