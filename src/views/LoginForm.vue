@@ -114,7 +114,7 @@ label {
   background-color: #9addd1;
   padding: 0px 25px 30px;
   margin: 0 auto 25px;
-  margin-top: 50px;
+  margin-top: 30px;
   -moz-border-radius: 2px;
   -webkit-border-radius: 2px;
   border-radius: 10px;

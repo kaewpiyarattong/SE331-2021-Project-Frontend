@@ -47,7 +47,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent"></div>
   </nav>
 
-  <div class="container mt-3">
+  <div class="container mt-3" id="page">
     <router-view />
   </div>
   <nav
@@ -127,5 +127,8 @@ export default {
   position: absolute;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+#page{
+  min-height: 84vh;
 }
 </style>
